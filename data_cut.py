@@ -3,6 +3,7 @@ import numpy as np
 import os
 from tqdm import tqdm
 import shutil
+import openpyxl
 
 root_dir = './datas_origin/'
 target_dir = './datas/'
@@ -42,7 +43,7 @@ def read_data(graph):
         data = data[data[:,3].argsort()]
     return data
 
-def cut_graph(graph, STEP_NUM, MIN_LEN, MAX_LEN):
+def cut_graph(graph, STEP_NUM, min_len, max_len):
     print('reading data...')
     data = read_data(graph)
     print('sort complete')
@@ -64,13 +65,13 @@ def cut_graph(graph, STEP_NUM, MIN_LEN, MAX_LEN):
                 data_list.append(tmp_list)
         else:
             tmp_time_max += time_step
-            if(MIN_LEN <= len(data_list) <= MAX_LEN):
+            if(min_len <= len(data_list) <= max_len):
                 data_list_groups.append(data_list)
             data_list = []
             if(timestamps[tmp_idx] <= tmp_time_max):
                 if(tmp_list not in data_list):
                     data_list.append(tmp_list)
-    if(MIN_LEN <= len(data_list) <= MAX_LEN):
+    if(min_len <= len(data_list) <= max_len):
         data_list_groups.append(data_list)
     target_graph_dir = target_dir + graph
     rmdir(target_graph_dir)
@@ -111,21 +112,66 @@ def cut_graph(graph, STEP_NUM, MIN_LEN, MAX_LEN):
             else:
                 break
         for i in tmp_edge_list:
-            if(MIN_LEN < len(i) < MAX_LEN):
+            if(min_len < len(i) < max_len):
                 data_list_groups_final.append(i)
 
     print('saving datas...')
-    for idx_group in tqdm(range(len(data_list_groups_final))):
+    data_list_group_len = len(data_list_groups_final)
+    for idx_group in tqdm(range(data_list_group_len)):
         with open(target_graph_dir + '{}.txt'.format(idx_group) ,'w') as f:
             for nodes in data_list_groups_final[idx_group]:
                 f.write(str(nodes[0]) + '\t' + str(nodes[1]) + '\n')
 
+    return data_list_group_len
+
 def data_cut(graph_box):
     rmdir(target_dir)
     ensure_dir(target_dir)
+    graph_num_box = []
     for graph in graph_box:
-        cut_graph(graph + '/', 0.008, 2, 200)
+        graph_num_box.append(cut_graph(graph + '/', 0.008, 2, 200))
+    return graph_num_box
 
+def cal_graph(graph_name):
+    graph = graph_name + '/'
+    data = np.array([])
+    try:
+        data = np.genfromtxt(find_file(root_dir + graph), dtype=int, delimiter='\t', comments='%')
+        s_nodes = data[:,0]
+        t_nodes = data[:,1]
+    except:
+        data = np.genfromtxt(find_file(root_dir + graph), dtype=int, delimiter=' ', comments='%')
+        s_nodes = data[:,0]
+        t_nodes = data[:,1]
+    return len(set(s_nodes)), len(set(t_nodes)), len(data)
+
+def data_cal(graph_box, graph_num_box):
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    idx = 1
+    ws['A{}'.format(idx)] = "Data"
+    ws['B{}'.format(idx)] = "S Vertex"
+    ws['C{}'.format(idx)] = "T Vertex"
+    ws['D{}'.format(idx)] = "Edge"
+    ws['E{}'.format(idx)] = "#Graph"
+    idx += 1
+    for graph, num in zip(graph_box, graph_num_box):
+        s_node_len, t_node_len, data_len = cal_graph(graph)
+        print("data:{}".format(graph))
+        print("s:{}, t:{}, edge:{}, graph:{}".format(s_node_len, t_node_len, data_len, num))
+        ws['A{}'.format(idx)] = graph
+        ws['B{}'.format(idx)] = s_node_len
+        ws['C{}'.format(idx)] = t_node_len
+        ws['D{}'.format(idx)] = data_len
+        ws['E{}'.format(idx)] = num
+        idx += 1
+    while(1):
+        try:
+            wb.save('./dataset_info.xlsx') #python can't save excel file while user has been opened it.
+            break
+        except:
+            input('please close the excel and try again!')
+        
 if __name__ == '__main__':
     graph_box = ['edit-nawiki', 'edit-dvwiktionary', 'edit-ltwikisource', 'edit-mswikibooks', 'edit-sswiktionary', 'edit-bgwikisource', 'edit-tawikiquote']
-    data_cut(graph_box)
+    data_cal(graph_box, data_cut(graph_box))
