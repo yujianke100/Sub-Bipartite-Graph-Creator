@@ -1,7 +1,10 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QHBoxLayout, QVBoxLayout, QWidget, QCheckBox
+from PyQt5.QtWidgets import QApplication, QMainWindow, QHBoxLayout, QVBoxLayout, QWidget, QCheckBox, QMessageBox, QSplashScreen
+from PyQt5.QtGui import *
+# from PyQt5.QtWidgets import *
 from Ui_design import Ui_Form
-from crawler import get_datasets
+from crawler import get_datasets, downloader
+from unpacker import unpacker
 
 class main_window(QMainWindow,Ui_Form):
     def __init__(self,parent = None):
@@ -12,7 +15,13 @@ class main_window(QMainWindow,Ui_Form):
         self.fresh_scroll()
 
     def on_click_next(self):
-        print(self.selected_set)
+        for i in self.selected_set:
+            print('downloading {}'.format(i))
+            downloader(i)
+        for i in self.selected_set:
+            print('unpacking {}'.format(i))
+            unpacker(i)
+        sys.exit()
 
     def on_click_quite(self):
         sys.exit()
@@ -26,7 +35,7 @@ class main_window(QMainWindow,Ui_Form):
         self.check_box = []
         self.selected_set = set()
         self.data_list, self.data_len, self.useful_dataset_num = get_datasets()
-        for i in self.data_list[:10]:
+        for i in self.data_list:
             self.check_box.append(QCheckBox("{:<5}| {:<25}| n:{:^10}| e:{:^10}".format(i[0], i[1], i[2], i[3]), self))
             self.check_box[-1].stateChanged.connect(self.check_box_select)
             lv.addWidget(self.check_box[-1])
@@ -43,7 +52,12 @@ class main_window(QMainWindow,Ui_Form):
                     pass
 
 if __name__ =='__main__':
+    #启动界面https://blog.csdn.net/weixin_41259130/article/details/88736136
     app = QApplication(sys.argv)
+    splash = QSplashScreen(QPixmap(r"splash.png"))
+    splash.show()
+    app.processEvents()
     gui = main_window()
     gui.show()
+    splash.finish(gui)
     sys.exit(app.exec_())

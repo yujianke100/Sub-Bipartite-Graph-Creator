@@ -1,4 +1,7 @@
 from requests_html import HTMLSession
+import time
+import requests
+import os
 
 def get_datasets():
     url = 'http://konect.cc/networks/'
@@ -56,7 +59,10 @@ def get_datasets():
     useful_dataset_num = 0
     for i in range(data_len):
         if(atb_idx[i]):
-            data_list.append([i, data_name[i].text, node_num[i].text, edge_num[i].text, list(data_name[i].links)[0]])
+            data_sname = list(data_name[i].links)[0]
+            if(data_sname[-1] == '/'):
+                data_sname = data_sname[:-1]
+            data_list.append([i, data_name[i].text, node_num[i].text, edge_num[i].text, data_sname])
             useful_dataset_num += 1
 
     return data_list, data_len, useful_dataset_num
@@ -65,6 +71,38 @@ def get_datasets():
 # print(data_name[12].text)
 # print(node_num[12].text)
 # print(edge_num[12].text)
+
+#https://blog.csdn.net/dqy74568392/article/details/96479370
+def downloader(data):
+    if(not os.path.exists('./datas_tar')):
+        os.makedirs('./datas_tar')
+    data_name = 'download.tsv.{}.tar.bz2'.format(data)
+
+    if(os.path.exists('./datas_tar/download.tsv.{}.tar.bz2'.format(data))):
+        return
+        
+    url = 'http://konect.cc/files/{}'.format(data_name)
+    with requests.get(url, stream=True) as r, open('./datas_tar/' + data_name, 'wb') as file:
+        total_size = int(r.headers['content-length'])
+        content_size = 0
+        plan = 0
+        start_time = time.time()
+        temp_size = 0
+        for content in r.iter_content(chunk_size=1024):
+            file.write(content)
+            content_size += len(content)
+            plan = (content_size / total_size) * 100
+            if time.time() - start_time > 1:
+                start_time = time.time()
+                speed = content_size - temp_size
+                if 0 <= speed < (1024 ** 2):
+                    print(plan, '%', speed / 1024, 'KB/s')
+                elif (1024 ** 2) <= speed < (1024 ** 3):
+                    print(plan, '%', speed / (1024 ** 2), 'MB/s')
+                elif (1024 ** 3) <= speed < (1024 ** 4):
+                    print(plan, '%', speed / (1024 ** 3), 'GB/s')
+                else:
+                    print(plan, '%', speed / (1024 ** 4), 'TB/s')
 
 if __name__ == '__main__':
     print('test for getting detasets')
