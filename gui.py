@@ -1,6 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QHBoxLayout, QVBoxLayout, QWidget, QCheckBox
 from Ui_design import Ui_Form
+from crawler import get_datasets
 
 class main_window(QMainWindow,Ui_Form):
     def __init__(self,parent = None):
@@ -11,7 +12,7 @@ class main_window(QMainWindow,Ui_Form):
         self.fresh_scroll()
 
     def on_click_next(self):
-        print(self.selected_idx)
+        print(self.selected_set)
 
     def on_click_quite(self):
         sys.exit()
@@ -23,20 +24,23 @@ class main_window(QMainWindow,Ui_Form):
         self.setCentralWidget(w)
         w.setLayout(lv)
         self.check_box = []
-        self.selected_idx = []
-        for i in range(10):
-            self.selected_idx.append(False)
-            self.check_box.append(QCheckBox(str(i), self))
+        self.selected_set = set()
+        self.data_list, self.data_len, self.useful_dataset_num = get_datasets()
+        for i in self.data_list[:10]:
+            self.check_box.append(QCheckBox("{:<5}| {:<25}| n:{:^10}| e:{:^10}".format(i[0], i[1], i[2], i[3]), self))
             self.check_box[-1].stateChanged.connect(self.check_box_select)
             lv.addWidget(self.check_box[-1])
         self.scrollArea.setWidget(w)
 
     def check_box_select(self):
-        for i in self.check_box:
-            if(i.isChecked()):
-                self.selected_idx[int(i.text())] = True
+        for i in range(len(self.check_box)):
+            if(self.check_box[i].isChecked()):
+                self.selected_set.update([self.data_list[i][4]])
             else:
-                self.selected_idx[int(i.text())] = False
+                try:
+                    self.selected_set.remove(self.data_list[i][4])
+                except:
+                    pass
 
 if __name__ =='__main__':
     app = QApplication(sys.argv)

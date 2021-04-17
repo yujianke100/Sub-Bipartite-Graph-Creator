@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'c:\Users\shinshi\Desktop\test\design.ui'
+# Form implementation generated from reading ui file 'c:\Users\shinshi\OneDrive - pop.zjgsu.edu.cn\Postgraduate\课程\软件理论工程\Sub-Bipartite-Graph-Creator\design.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.2
 #
@@ -14,23 +14,23 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(400, 359)
+        Form.resize(650, 359)
         self.scrollArea = QtWidgets.QScrollArea(Form)
-        self.scrollArea.setGeometry(QtCore.QRect(30, 60, 340, 230))
+        self.scrollArea.setGeometry(QtCore.QRect(30, 60, 581, 231))
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 339, 229))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 579, 229))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.next = QtWidgets.QPushButton(Form)
-        self.next.setGeometry(QtCore.QRect(280, 310, 93, 28))
+        self.next.setGeometry(QtCore.QRect(510, 310, 93, 28))
         self.next.setObjectName("next")
         self.quite = QtWidgets.QPushButton(Form)
         self.quite.setGeometry(QtCore.QRect(30, 310, 93, 28))
         self.quite.setObjectName("quite")
         self.label = QtWidgets.QLabel(Form)
-        self.label.setGeometry(QtCore.QRect(100, 20, 201, 31))
+        self.label.setGeometry(QtCore.QRect(210, 20, 201, 31))
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(11)
