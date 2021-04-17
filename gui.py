@@ -5,6 +5,7 @@ from PyQt5.QtGui import *
 from Ui_design import Ui_Form
 from crawler import get_datasets, downloader
 from unpacker import unpacker
+from data_cut import data_cal
 
 class main_window(QMainWindow,Ui_Form):
     def __init__(self,parent = None):
@@ -15,12 +16,15 @@ class main_window(QMainWindow,Ui_Form):
         self.fresh_scroll()
 
     def on_click_next(self):
-        for i in self.selected_set:
+        selected_list = list(self.selected_set)
+        for i in selected_list:
             print('downloading {}'.format(i))
             downloader(i)
-        for i in self.selected_set:
+        for i in selected_list:
             print('unpacking {}'.format(i))
             unpacker(i)
+        data_cal(selected_list)
+
         sys.exit()
 
     def on_click_quite(self):
@@ -51,7 +55,7 @@ class main_window(QMainWindow,Ui_Form):
                 except:
                     pass
 
-if __name__ =='__main__':
+def gui():
     #启动界面https://blog.csdn.net/weixin_41259130/article/details/88736136
     app = QApplication(sys.argv)
     splash = QSplashScreen(QPixmap(r"splash.png"))
@@ -61,3 +65,7 @@ if __name__ =='__main__':
     gui.show()
     splash.finish(gui)
     sys.exit(app.exec_())
+
+if __name__ =='__main__':
+    gui()
+    

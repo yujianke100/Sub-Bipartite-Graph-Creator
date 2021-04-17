@@ -145,7 +145,8 @@ def cal_graph(graph_name):
         t_nodes = data[:,1]
     return len(set(s_nodes)), len(set(t_nodes)), len(data)
 
-def data_cal(graph_box, graph_num_box):
+def data_cal(graph_box):
+    graph_num_box = data_cut(graph_box)
     wb = openpyxl.Workbook()
     ws = wb.active
     idx = 1
@@ -174,4 +175,4 @@ def data_cal(graph_box, graph_num_box):
         
 if __name__ == '__main__':
     graph_box = ['edit-nawiki', 'edit-dvwiktionary', 'edit-ltwikisource', 'edit-mswikibooks', 'edit-sswiktionary', 'edit-bgwikisource', 'edit-tawikiquote']
-    data_cal(graph_box, data_cut(graph_box))
+    data_cal(graph_box)
