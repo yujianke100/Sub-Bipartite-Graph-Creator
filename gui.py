@@ -6,16 +6,19 @@ from Ui_design import Ui_Form
 from crawler import get_datasets, downloader
 from unpacker import unpacker
 from data_cut import data_cal
+from get_data import get_data
 
 class main_window(QMainWindow,Ui_Form):
     def __init__(self,parent = None):
         super(main_window, self).__init__(parent)
         self.setupUi(self)
         self.next.clicked.connect(self.on_click_next)
-        self.quite.clicked.connect(self.on_click_quite)
+        self.quit.clicked.connect(self.on_click_quit)
         self.fresh_scroll()
 
     def on_click_next(self):
+        self.next.setEnabled(False)
+        self.quit.setEnabled(False)
         selected_list = list(self.selected_set)
         for i in selected_list:
             print('downloading {}'.format(i))
@@ -24,10 +27,11 @@ class main_window(QMainWindow,Ui_Form):
             print('unpacking {}'.format(i))
             unpacker(i)
         data_cal(selected_list)
-
+        get_data()
         sys.exit()
 
-    def on_click_quite(self):
+
+    def on_click_quit(self):
         sys.exit()
 
     def fresh_scroll(self):

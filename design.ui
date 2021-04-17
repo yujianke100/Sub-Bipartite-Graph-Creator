@@ -49,7 +49,7 @@
     <string>next</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="quite">
+  <widget class="QPushButton" name="quit">
    <property name="geometry">
     <rect>
      <x>30</x>
@@ -59,7 +59,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>quite</string>
+    <string>quit</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
