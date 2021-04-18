@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QWidget, QCheckBox, QSplashScreen, QLabel, QDialog
+from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QWidget, QCheckBox, QSplashScreen, QLabel, QDialog, QMessageBox
 from PyQt5.QtGui import QPixmap, QFont
 from PyQt5.QtCore import Qt
 from Ui_design import Ui_Form
@@ -13,7 +13,13 @@ import threading
 class main_window(Ui_Form):
     def __init__(self):
         super(main_window, self).__init__()
-        self.load_flag = 1
+    
+    def element_switch(self, flag):
+        self.next.setEnabled(flag)
+        self.quit.setEnabled(flag)
+        self.max_box.setEnabled(flag)
+        self.min_box.setEnabled(flag)
+        self.gap_num.setEnabled(flag)
     
     def ui_init(self):
         self.next.clicked.connect(self.on_click_next)
@@ -21,9 +27,19 @@ class main_window(Ui_Form):
         self.fresh_scroll()
 
     def on_click_next(self):
-        self.next.setEnabled(False)
-        self.quit.setEnabled(False)
+        self.element_switch(False)
         selected_list = list(self.selected_set)
+        selected_list = []
+        check_info = ''
+        for i in self.selected_idx:
+            selected_list.append(self.data_list[i][4])
+            check_info += '{}:{}\n'.format(self.data_list[i][0], self.data_list[i][1])
+        w = QWidget()
+        reply = QMessageBox.question(w, 'Check', 'Selected datasets:\n{}'.format(check_info[:-1]), QMessageBox.Yes | QMessageBox.No)
+        if reply == QMessageBox.No:
+            self.element_switch(True)
+            return
+        self.scrollArea.setEnabled(False)
         for i in selected_list:
             print('downloading {}'.format(i))
             downloader(i)
@@ -35,46 +51,56 @@ class main_window(Ui_Form):
         sys.exit()
 
     def on_click_quit(self):
+        element_switch(False)
         sys.exit()
 
-    def generate_label(self, name):
-        temp_label = QLabel()
-        temp_label.setText(name)
-        temp_label.setAlignment(Qt.AlignVCenter | Qt.AlignLeft)
-        return temp_label
+    def generate_label(self, name, style):
+        tmp_label = QLabel()
+        tmp_label.setText(name)
+        tmp_label.setAlignment(Qt.AlignVCenter | Qt.AlignLeft)
+        tmp_label.setStyleSheet(style)
+        
+        return tmp_label
 
     def fresh_scroll(self):
         lv = QVBoxLayout()
+        lv.setSpacing(0)
         v = QWidget()
         v.setLayout(lv)
         self.check_box = []
-        self.selected_set = set()
+        self.selected_idx = set()
         self.data_list, self.data_len, self.useful_dataset_num = get_datasets()
+        data_num = 0
         for i in self.data_list:
+            if(data_num % 2):
+                style = "background-color:rgb(240,240,240); padding:5;"
+            else:
+                style = "background-color:rgb(220,220,220); padding:5;"
+            data_num += 1
             lh = QHBoxLayout()
-            self.check_box.append(QCheckBox('{:<5}'.format(i[0])))
+            lh.setSpacing(0)
+            btn = QCheckBox('{:<5}'.format(i[0]))
+            btn.setStyleSheet(style)
+            self.check_box.append(btn)
             lh.addWidget(self.check_box[-1],stretch=5)
             self.check_box[-1].stateChanged.connect(self.check_box_select)
             #https://blog.csdn.net/Nin7a/article/details/104533138
-            temp_label1 = QLabel()
-            temp_label1.setLineWidth(5)
-            lh.addWidget(self.generate_label(i[1]),stretch=30)
-            lh.addWidget(self.generate_label(i[2]),stretch=10)
-            lh.addWidget(self.generate_label(i[3]),stretch=10)
-
+            lh.addWidget(self.generate_label(i[1], style),stretch=30)
+            lh.addWidget(self.generate_label(i[2], style),stretch=10)
+            lh.addWidget(self.generate_label(i[3], style),stretch=10)
             lv.addLayout(lh)
         self.scrollArea.setWidget(v)
-        self.load_flag = 0
 
     def check_box_select(self):
         for i in range(len(self.check_box)):
             if(self.check_box[i].isChecked()):
-                self.selected_set.update([self.data_list[i][4]])
+                self.selected_idx.update([i])
             else:
                 try:
-                    self.selected_set.remove(self.data_list[i][4])
+                    self.selected_idx.remove(i)
                 except:
                     pass
+        self.next.setText("next({})".format(len(self.selected_idx)))
     
 
 class MySplashScreen(QSplashScreen):
@@ -94,8 +120,6 @@ class MyThread(threading.Thread):
                 time.sleep(1)
             except:
                 break
-            
-            
 
 def main():
     #启动界面https://blog.csdn.net/ye281842_/article/details/109637580
