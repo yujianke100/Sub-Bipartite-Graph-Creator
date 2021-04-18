@@ -238,9 +238,9 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="next">
+        <widget class="QPushButton" name="generate">
          <property name="text">
-          <string>next</string>
+          <string>generate</string>
          </property>
         </widget>
        </item>
@@ -250,8 +250,8 @@
       <widget class="QTextBrowser" name="textBrowser">
        <property name="font">
         <font>
-         <family>Adobe Devanagari</family>
-         <pointsize>11</pointsize>
+         <family>Courier New</family>
+         <pointsize>12</pointsize>
         </font>
        </property>
       </widget>
@@ -265,7 +265,7 @@
   <tabstop>min_box</tabstop>
   <tabstop>max_box</tabstop>
   <tabstop>quit</tabstop>
-  <tabstop>next</tabstop>
+  <tabstop>generate</tabstop>
   <tabstop>scrollArea</tabstop>
  </tabstops>
  <resources/>

@@ -10,37 +10,38 @@ from get_data import get_data
 import time
 import threading
 
-class EmittingStream(QObject):  
-    textWritten = pyqtSignal(str)  #定义一个发送str的信号
+
+class EmittingStream(QObject):
+    # https://blog.csdn.net/william_munch/article/details/89425038
+    textWritten = pyqtSignal(str)
+
     def write(self, text):
-        self.textWritten.emit(str(text)) 
+        self.textWritten.emit(str(text))
         loop = QEventLoop()
         QTimer.singleShot(10, loop.quit)
         loop.exec_()
 
+
 class main_window(Ui_Form):
     def __init__(self):
-        super(main_window, self).__init__() 
+        super(main_window, self).__init__()
 
-    def outputWritten(self, text):  
-        cursor = self.textBrowser.textCursor()  
-        cursor.movePosition(QTextCursor.End)  
-        cursor.insertText(text)  
+    def outputWritten(self, text):
+        cursor = self.textBrowser.textCursor()
+        cursor.movePosition(QTextCursor.End)
+        cursor.insertText(text)
         self.textBrowser.setTextCursor(cursor)
         self.textBrowser.ensureCursorVisible()
-        # self.textBrowser.append(text)
-        # self.textBrowser.moveCursor(self.textBrowser.textCursor().End)
 
     def ui_init(self):
-        self.next.clicked.connect(self.on_click_next)
+        self.generate.clicked.connect(self.on_click_generate)
         self.quit.clicked.connect(self.on_click_quit)
-        sys.stdout = EmittingStream(textWritten=self.outputWritten)  
+        sys.stdout = EmittingStream(textWritten=self.outputWritten)
         sys.stderr = EmittingStream(textWritten=self.outputWritten)
         self.fresh_scroll()
-        print('init finished')
 
     def element_switch(self, flag):
-        self.next.setEnabled(flag)
+        self.generate.setEnabled(flag)
         self.quit.setEnabled(flag)
         self.max_box.setEnabled(flag)
         self.min_box.setEnabled(flag)
@@ -48,33 +49,35 @@ class main_window(Ui_Form):
 
     def run(self, selected_list):
         for i in selected_list:
-            print('downloading {}'.format(i))
+            print('downloading {}...'.format(i), end='')
             downloader(i)
+            print('finished')
         for i in selected_list:
-            print('unpacking {}'.format(i))
+            print('unpacking {}...'.format(i), end='')
             unpacker(i)
-        data_cal(selected_list, self.gap_num.value(), self.min_box.value(), self.max_box.value())
+            print('finished')
+        data_cal(selected_list, self.gap_num.value(),
+                 self.min_box.value(), self.max_box.value())
         get_data()
 
-    def on_click_next(self):
+    def on_click_generate(self):
         self.element_switch(False)
         selected_list = []
         check_info = ''
         for i in self.selected_idx:
             selected_list.append(self.data_list[i][4])
-            check_info += '{}:{}\n'.format(self.data_list[i][0], self.data_list[i][1])
+            check_info += '{}:{}\n'.format(
+                self.data_list[i][0], self.data_list[i][1])
         w = QWidget()
-        reply = QMessageBox.question(w, 'Check', 'Selected datasets:\n{}'.format(check_info[:-1]), QMessageBox.Yes | QMessageBox.No)
+        reply = QMessageBox.question(w, 'Check', 'Selected datasets:\n{}'.format(
+            check_info[:-1]), QMessageBox.Yes | QMessageBox.No)
         if reply == QMessageBox.No:
             self.element_switch(True)
             return
         self.scrollArea.setEnabled(False)
         self.run(selected_list)
-        # t1 = threading.Thread(target=self.run, args=(selected_list, ))
-        t1.start()
-        t1.join()
-        sys.exit()
-        
+        self.scrollArea.setEnabled(True)
+        self.element_switch(True)
 
     def on_click_quit(self):
         self.element_switch(False)
@@ -85,7 +88,6 @@ class main_window(Ui_Form):
         tmp_label.setText(name)
         tmp_label.setAlignment(Qt.AlignVCenter | Qt.AlignLeft)
         tmp_label.setStyleSheet(style)
-        
         return tmp_label
 
     def fresh_scroll(self):
@@ -99,21 +101,21 @@ class main_window(Ui_Form):
         data_num = 0
         for i in self.data_list:
             if(data_num % 2):
-                style = "background-color:rgb(240,240,240); padding:5;"
+                style = 'background-color:rgb(240,240,240); padding:5;'
             else:
-                style = "background-color:rgb(220,220,220); padding:5;"
+                style = 'background-color:rgb(220,220,220); padding:5;'
             data_num += 1
             lh = QHBoxLayout()
             lh.setSpacing(0)
             btn = QCheckBox('{:<5}'.format(i[0]))
             btn.setStyleSheet(style)
             self.check_box.append(btn)
-            lh.addWidget(self.check_box[-1],stretch=5)
+            lh.addWidget(self.check_box[-1], stretch=5)
             self.check_box[-1].stateChanged.connect(self.check_box_select)
-            #https://blog.csdn.net/Nin7a/article/details/104533138
-            lh.addWidget(self.generate_label(i[1], style),stretch=30)
-            lh.addWidget(self.generate_label(i[2], style),stretch=10)
-            lh.addWidget(self.generate_label(i[3], style),stretch=10)
+            # https://blog.csdn.net/Nin7a/article/details/104533138
+            lh.addWidget(self.generate_label(i[1], style), stretch=30)
+            lh.addWidget(self.generate_label(i[2], style), stretch=10)
+            lh.addWidget(self.generate_label(i[3], style), stretch=10)
             lv.addLayout(lh)
         self.scrollArea.setWidget(v)
 
@@ -126,34 +128,38 @@ class main_window(Ui_Form):
                     self.selected_idx.remove(i)
                 except:
                     pass
-        self.next.setText("next({})".format(len(self.selected_idx)))
-    
+        self.generate.setText('generate({})'.format(len(self.selected_idx)))
+
 
 class MySplashScreen(QSplashScreen):
     def mousePressEvent(self, event):
         pass
 
+
 class splash_thread(threading.Thread):
-    #https://www.jianshu.com/p/ebecd0667aee
+    # https://www.jianshu.com/p/ebecd0667aee
     def __init__(self, threadName, splash):
         super(splash_thread, self).__init__(name=threadName)
         self.splash = splash
+
     def run(self):
         for i in range(100):
             try:
-                self.splash.showMessage("正在读取数据集，已经过{}秒".format(i), Qt.AlignHCenter | Qt.AlignBottom, Qt.black)
+                self.splash.showMessage('正在读取数据集，已经过{}秒'.format(
+                    i), Qt.AlignHCenter | Qt.AlignBottom, Qt.black)
                 time.sleep(1)
             except:
                 break
 
+
 def main():
-    #启动界面https://blog.csdn.net/ye281842_/article/details/109637580
+    # 启动界面https://blog.csdn.net/ye281842_/article/details/109637580
     app = QApplication(sys.argv)
     splash = MySplashScreen()
     splash.setPixmap(QPixmap('./splash.png'))  # 设置背景图片
     splash.setFont(QFont('微软雅黑', 10))
     splash.show()
-    splash_thread("waiting", splash).start()
+    splash_thread('waiting', splash).start()
     app.processEvents()
     Dialog = QDialog()
     ui = main_window()
@@ -164,6 +170,6 @@ def main():
     splash.deleteLater()
     sys.exit(app.exec_())
 
-if __name__ =='__main__':
+
+if __name__ == '__main__':
     main()
-    
