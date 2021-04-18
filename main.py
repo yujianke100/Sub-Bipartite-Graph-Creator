@@ -36,6 +36,8 @@ class main_window(Ui_Form):
     def ui_init(self):
         self.generate.clicked.connect(self.on_click_generate)
         self.quit.clicked.connect(self.on_click_quit)
+        self.splitter.setStretchFactor(0,2)
+        self.splitter.setStretchFactor(1,1)
         sys.stdout = EmittingStream(textWritten=self.outputWritten)
         sys.stderr = EmittingStream(textWritten=self.outputWritten)
         self.fresh_scroll()

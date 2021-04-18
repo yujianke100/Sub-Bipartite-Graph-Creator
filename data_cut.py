@@ -176,6 +176,7 @@ def data_cal(graph_box, gap, min_num, max_num):
     idx += 1
     print('='*58)
     print('{:^58}'.format('Generated dataset statistics'))
+    print('='*58)
     print('||{:<30}|{:<5}|{:<5}|{:<6}|{:<4}||'.format(
         'Dataset', '#.S', '#,T', '#.E', '#.G'))
     for graph, num in zip(graph_box, graph_num_box):
