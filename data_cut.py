@@ -124,12 +124,12 @@ def cut_graph(graph, STEP_NUM, min_len, max_len):
 
     return data_list_group_len
 
-def data_cut(graph_box):
+def data_cut(graph_box, gap, min_num, max_num):
     rmdir(target_dir)
     ensure_dir(target_dir)
     graph_num_box = []
     for graph in graph_box:
-        graph_num_box.append(cut_graph(graph + '/', 0.008, 2, 200))
+        graph_num_box.append(cut_graph(graph + '/', gap, min_num, max_num))
     return graph_num_box
 
 def cal_graph(graph_name):
@@ -145,8 +145,8 @@ def cal_graph(graph_name):
         t_nodes = data[:,1]
     return len(set(s_nodes)), len(set(t_nodes)), len(data)
 
-def data_cal(graph_box):
-    graph_num_box = data_cut(graph_box)
+def data_cal(graph_box, gap, min_num, max_num):
+    graph_num_box = data_cut(graph_box, gap, min_num, max_num)
     wb = openpyxl.Workbook()
     ws = wb.active
     idx = 1
@@ -175,4 +175,4 @@ def data_cal(graph_box):
         
 if __name__ == '__main__':
     graph_box = ['edit-nawiki', 'edit-dvwiktionary', 'edit-ltwikisource', 'edit-mswikibooks', 'edit-sswiktionary', 'edit-bgwikisource', 'edit-tawikiquote']
-    data_cal(graph_box)
+    data_cal(graph_box, 0.008, 2, 200)
