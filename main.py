@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QWidget, QCheckBox, QSplashScreen, QLabel, QDialog, QMessageBox
-from PyQt5.QtGui import QPixmap, QFont
-from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QPixmap, QFont, QTextCursor
+from PyQt5.QtCore import Qt, QObject, pyqtSignal, QEventLoop, QTimer
 from Ui_design import Ui_Form
 from crawler import get_datasets, downloader
 from unpacker import unpacker
@@ -10,21 +10,51 @@ from get_data import get_data
 import time
 import threading
 
+class EmittingStream(QObject):  
+    textWritten = pyqtSignal(str)  #定义一个发送str的信号
+    def write(self, text):
+        self.textWritten.emit(str(text)) 
+        loop = QEventLoop()
+        QTimer.singleShot(10, loop.quit)
+        loop.exec_()
+
 class main_window(Ui_Form):
     def __init__(self):
-        super(main_window, self).__init__()
-    
+        super(main_window, self).__init__() 
+
+    def outputWritten(self, text):  
+        cursor = self.textBrowser.textCursor()  
+        cursor.movePosition(QTextCursor.End)  
+        cursor.insertText(text)  
+        self.textBrowser.setTextCursor(cursor)
+        self.textBrowser.ensureCursorVisible()
+        # self.textBrowser.append(text)
+        # self.textBrowser.moveCursor(self.textBrowser.textCursor().End)
+
+    def ui_init(self):
+        self.next.clicked.connect(self.on_click_next)
+        self.quit.clicked.connect(self.on_click_quit)
+        sys.stdout = EmittingStream(textWritten=self.outputWritten)  
+        sys.stderr = EmittingStream(textWritten=self.outputWritten)
+        self.fresh_scroll()
+        print('init finished')
+
     def element_switch(self, flag):
         self.next.setEnabled(flag)
         self.quit.setEnabled(flag)
         self.max_box.setEnabled(flag)
         self.min_box.setEnabled(flag)
         self.gap_num.setEnabled(flag)
-    
-    def ui_init(self):
-        self.next.clicked.connect(self.on_click_next)
-        self.quit.clicked.connect(self.on_click_quit)
-        self.fresh_scroll()
+
+    def run(self, selected_list):
+        for i in selected_list:
+            print('downloading {}'.format(i))
+            downloader(i)
+        for i in selected_list:
+            print('unpacking {}'.format(i))
+            unpacker(i)
+        data_cal(selected_list, self.gap_num.value(), self.min_box.value(), self.max_box.value())
+        get_data()
 
     def on_click_next(self):
         self.element_switch(False)
@@ -39,18 +69,15 @@ class main_window(Ui_Form):
             self.element_switch(True)
             return
         self.scrollArea.setEnabled(False)
-        for i in selected_list:
-            print('downloading {}'.format(i))
-            downloader(i)
-        for i in selected_list:
-            print('unpacking {}'.format(i))
-            unpacker(i)
-        data_cal(selected_list, self.gap_num.value(), self.min_box.value(), self.max_box.value())
-        get_data()
+        self.run(selected_list)
+        # t1 = threading.Thread(target=self.run, args=(selected_list, ))
+        t1.start()
+        t1.join()
         sys.exit()
+        
 
     def on_click_quit(self):
-        element_switch(False)
+        self.element_switch(False)
         sys.exit()
 
     def generate_label(self, name, style):
@@ -106,13 +133,12 @@ class MySplashScreen(QSplashScreen):
     def mousePressEvent(self, event):
         pass
 
-class MyThread(threading.Thread):
+class splash_thread(threading.Thread):
     #https://www.jianshu.com/p/ebecd0667aee
-    def __init__(self , threadName, splash):
-        super(MyThread,self).__init__(name=threadName)
+    def __init__(self, threadName, splash):
+        super(splash_thread, self).__init__(name=threadName)
         self.splash = splash
     def run(self):
-        global count
         for i in range(100):
             try:
                 self.splash.showMessage("正在读取数据集，已经过{}秒".format(i), Qt.AlignHCenter | Qt.AlignBottom, Qt.black)
@@ -127,7 +153,7 @@ def main():
     splash.setPixmap(QPixmap('./splash.png'))  # 设置背景图片
     splash.setFont(QFont('微软雅黑', 10))
     splash.show()
-    MyThread("waiting", splash).start()
+    splash_thread("waiting", splash).start()
     app.processEvents()
     Dialog = QDialog()
     ui = main_window()
