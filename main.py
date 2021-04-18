@@ -28,7 +28,6 @@ class main_window(Ui_Form):
 
     def on_click_next(self):
         self.element_switch(False)
-        selected_list = list(self.selected_set)
         selected_list = []
         check_info = ''
         for i in self.selected_idx:
