@@ -1,12 +1,12 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QWidget, QCheckBox, QSplashScreen, QLabel, QDialog, QMessageBox
 from PyQt5.QtGui import QPixmap, QFont, QTextCursor
-from PyQt5.QtCore import Qt, QObject, pyqtSignal, QEventLoop, QTimer
+from PyQt5.QtCore import QObject, pyqtSignal, QEventLoop, Qt, QTimer
 from Ui_design import Ui_Form
 from crawler import get_datasets, downloader
 from unpacker import unpacker
 from data_cut import data_cal
-from generate_data import generate_data
+from data_generate import data_generate
 
 
 class EmittingStream(QObject):
@@ -64,7 +64,7 @@ class main_window(Ui_Form):
             print('finished')
         data_cal(selected_list, self.gap_num.value(),
                  self.min_box.value(), self.max_box.value())
-        generate_data()
+        data_generate()
 
     def on_click_generate(self):
         self.element_switch(False)
@@ -107,21 +107,22 @@ class main_window(Ui_Form):
         self.data_list_len = len(self.data_list)
         self.data_num = 0
         for i in self.data_list:
+            style = """padding:10px; font-size:24px; font-family:"Times New Roman";"""
             if(self.data_num % 2):
-                style = 'background-color:rgb(240,240,240); padding:5;'
+                style += 'background-color:rgb(240,240,240);'
             else:
-                style = 'background-color:rgb(220,220,220); padding:5;'
+                style += 'background-color:rgb(220,220,220);'
             lh = QHBoxLayout()
             lh.setSpacing(0)
             btn = QCheckBox('{:<5}'.format(i[0]))
             btn.setStyleSheet(style)
             self.check_box.append(btn)
-            lh.addWidget(self.check_box[-1], stretch=5)
+            lh.addWidget(self.check_box[-1], stretch=1)
             self.check_box[-1].stateChanged.connect(self.check_box_select)
             # https://blog.csdn.net/Nin7a/article/details/104533138
-            lh.addWidget(self.generate_label(i[1], style), stretch=30)
-            lh.addWidget(self.generate_label(i[2], style), stretch=10)
-            lh.addWidget(self.generate_label(i[3], style), stretch=10)
+            lh.addWidget(self.generate_label(i[1], style), stretch=3)
+            lh.addWidget(self.generate_label(i[2], style), stretch=1)
+            lh.addWidget(self.generate_label(i[3], style), stretch=1)
             lv.addLayout(lh)
 
             self.data_num += 1
@@ -151,7 +152,7 @@ def main():
     app = QApplication(sys.argv)
     splash = MySplashScreen()
     splash.setPixmap(QPixmap('./splash.png'))  # 设置背景图片
-    splash.setFont(QFont('Times New Roman', 10))
+    splash.setFont(QFont('Times New Roman', 12))
     splash.show()
     app.processEvents()
     Dialog = QDialog()

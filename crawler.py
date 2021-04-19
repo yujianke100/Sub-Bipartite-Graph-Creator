@@ -1,7 +1,8 @@
 from requests_html import HTMLSession
-import time
-import requests
-import os
+from time import time
+from requests import get
+from os import makedirs
+from os.path import exists
 
 
 def get_datasets(ui):
@@ -48,33 +49,33 @@ def get_datasets(ui):
             except:
                 pass
         ui.change_init_status(
-            'Screening of avaliable temporal bipartite graph...({}/{})'.format(i, data_len))
+            'Screening of graph...({}/{})'.format(i, data_len))
     return data_list
 
 # https://blog.csdn.net/dqy74568392/article/details/96479370
 
 
 def downloader(data):
-    if(not os.path.exists('./datas_tar')):
-        os.makedirs('./datas_tar')
+    if(not exists('./datas_tar')):
+        makedirs('./datas_tar')
     data_name = 'download.tsv.{}.tar.bz2'.format(data)
 
-    if(os.path.exists('./datas_tar/download.tsv.{}.tar.bz2'.format(data))):
+    if(exists('./datas_tar/download.tsv.{}.tar.bz2'.format(data))):
         return
 
     url = 'http://konect.cc/files/{}'.format(data_name)
-    with requests.get(url, stream=True) as r, open('./datas_tar/' + data_name, 'wb') as file:
+    with get(url, stream=True) as r, open('./datas_tar/' + data_name, 'wb') as file:
         total_size = int(r.headers['content-length'])
         content_size = 0
         plan = 0
-        start_time = time.time()
+        start_time = time()
         temp_size = 0
         for content in r.iter_content(chunk_size=1024):
             file.write(content)
             content_size += len(content)
             plan = (content_size / total_size) * 100
-            if time.time() - start_time > 1:
-                start_time = time.time()
+            if time() - start_time > 1:
+                start_time = time()
                 speed = content_size - temp_size
                 if 0 <= speed < (1024 ** 2):
                     print(plan, '%', speed / 1024, 'KB/s')

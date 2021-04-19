@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>911</width>
-    <height>937</height>
+    <width>939</width>
+    <height>928</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,26 +19,20 @@
   <property name="autoFillBackground">
    <bool>true</bool>
   </property>
-  <layout class="QGridLayout" name="gridLayout" rowstretch="0" columnstretch="0">
+  <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <widget class="QSplitter" name="splitter">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="opaqueResize">
-      <bool>true</bool>
-     </property>
-     <property name="handleWidth">
-      <number>8</number>
-     </property>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QLabel" name="label">
          <property name="font">
           <font>
            <family>Times New Roman</family>
-           <pointsize>14</pointsize>
+           <pointsize>12</pointsize>
           </font>
          </property>
          <property name="text">
@@ -56,6 +50,7 @@
            <property name="font">
             <font>
              <family>Times New Roman</family>
+             <pointsize>12</pointsize>
             </font>
            </property>
            <property name="layoutDirection">
@@ -71,6 +66,12 @@
          </item>
          <item>
           <widget class="QDoubleSpinBox" name="gap_num">
+           <property name="font">
+            <font>
+             <family>Times New Roman</family>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
            <property name="decimals">
             <number>3</number>
            </property>
@@ -93,6 +94,7 @@
            <property name="font">
             <font>
              <family>Times New Roman</family>
+             <pointsize>12</pointsize>
             </font>
            </property>
            <property name="frameShape">
@@ -111,6 +113,12 @@
          </item>
          <item>
           <widget class="QSpinBox" name="min_box">
+           <property name="font">
+            <font>
+             <family>Times New Roman</family>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
            <property name="minimum">
             <number>2</number>
            </property>
@@ -124,6 +132,7 @@
            <property name="font">
             <font>
              <family>Times New Roman</family>
+             <pointsize>12</pointsize>
             </font>
            </property>
            <property name="text">
@@ -136,6 +145,12 @@
          </item>
          <item>
           <widget class="QSpinBox" name="max_box">
+           <property name="font">
+            <font>
+             <family>Times New Roman</family>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
            <property name="minimum">
             <number>3</number>
            </property>
@@ -150,12 +165,13 @@
         </layout>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="5,30,9,11">
+        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="5,1,15,5,5,1">
          <item>
-          <widget class="QLabel" name="label_5">
+          <widget class="QLabel" name="label_9">
            <property name="font">
             <font>
              <family>Times New Roman</family>
+             <pointsize>14</pointsize>
             </font>
            </property>
            <property name="text">
@@ -167,14 +183,31 @@
           </widget>
          </item>
          <item>
+          <widget class="QLabel" name="label_5">
+           <property name="font">
+            <font>
+             <family>Times New Roman</family>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QLabel" name="label_6">
            <property name="font">
             <font>
              <family>Times New Roman</family>
+             <pointsize>14</pointsize>
             </font>
            </property>
            <property name="text">
-            <string>     Name</string>
+            <string>Name</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -186,6 +219,7 @@
            <property name="font">
             <font>
              <family>Times New Roman</family>
+             <pointsize>14</pointsize>
             </font>
            </property>
            <property name="text">
@@ -201,6 +235,7 @@
            <property name="font">
             <font>
              <family>Times New Roman</family>
+             <pointsize>14</pointsize>
             </font>
            </property>
            <property name="text">
@@ -211,10 +246,32 @@
            </property>
           </widget>
          </item>
+         <item>
+          <widget class="QLabel" name="label_10">
+           <property name="font">
+            <font>
+             <family>Times New Roman</family>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
         <widget class="QScrollArea" name="scrollArea">
+         <property name="font">
+          <font>
+           <family>Courier New</family>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
          <property name="frameShape">
           <enum>QFrame::Box</enum>
          </property>
@@ -232,8 +289,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>885</width>
-            <height>329</height>
+            <width>913</width>
+            <height>314</height>
            </rect>
           </property>
          </widget>
@@ -243,6 +300,12 @@
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
           <widget class="QPushButton" name="quit">
+           <property name="font">
+            <font>
+             <family>Times New Roman</family>
+             <pointsize>11</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>quit</string>
            </property>
@@ -250,6 +313,12 @@
          </item>
          <item>
           <widget class="QPushButton" name="generate">
+           <property name="font">
+            <font>
+             <family>Times New Roman</family>
+             <pointsize>11</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>generate</string>
            </property>
@@ -263,7 +332,7 @@
       <property name="font">
        <font>
         <family>Courier New</family>
-        <pointsize>12</pointsize>
+        <pointsize>14</pointsize>
        </font>
       </property>
      </widget>

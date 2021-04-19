@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-import numpy as np
-import os
+# import numpy as np
+from numpy import genfromtxt, array
+from os import remove, makedirs, listdir
+from os.path import exists
 # from tqdm import tqdm
-import shutil
+from shutil import rmtree
 import openpyxl
 
 root_dir = './datas_origin/'
@@ -11,7 +13,7 @@ target_dir = './datas/'
 
 def rmdir(path):
     try:
-        shutil.rmtree(path)
+        rmtree(path)
     except:
         # print('no' + path)
         pass
@@ -19,19 +21,19 @@ def rmdir(path):
 
 def rmfile(path):
     try:
-        os.remove(path)
+        remove(path)
     except:
         # print('no' + path)
         pass
 
 
 def ensure_dir(path):
-    if(not os.path.exists(path)):
-        os.makedirs(path)
+    if(not exists(path)):
+        makedirs(path)
 
 
 def find_file(dir):
-    files = os.listdir(dir)
+    files = listdir(dir)
     for file in files:
         if(file[:3] == 'out'):
             file = dir + file
@@ -43,11 +45,11 @@ def find_file(dir):
 
 def read_data(graph):
     try:
-        data = np.genfromtxt(find_file(root_dir + graph),
+        data = genfromtxt(find_file(root_dir + graph),
                              dtype=int, delimiter='\t', comments='%')
         data = data[data[:, 3].argsort()]
     except:
-        data = np.genfromtxt(find_file(root_dir + graph),
+        data = genfromtxt(find_file(root_dir + graph),
                              dtype=int, delimiter=' ', comments='%')
         data = data[data[:, 3].argsort()]
     return data
@@ -149,14 +151,14 @@ def data_cut(graph_box, gap, min_num, max_num):
 
 def cal_graph(graph_name):
     graph = graph_name + '/'
-    data = np.array([])
+    data = array([])
     try:
-        data = np.genfromtxt(find_file(root_dir + graph),
+        data = genfromtxt(find_file(root_dir + graph),
                              dtype=int, delimiter='\t', comments='%')
         s_nodes = data[:, 0]
         t_nodes = data[:, 1]
     except:
-        data = np.genfromtxt(find_file(root_dir + graph),
+        data = genfromtxt(find_file(root_dir + graph),
                              dtype=int, delimiter=' ', comments='%')
         s_nodes = data[:, 0]
         t_nodes = data[:, 1]

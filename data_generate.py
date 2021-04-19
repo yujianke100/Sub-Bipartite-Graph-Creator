@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-import networkx as nx
-import numpy as np
+# import numpy as np
+from numpy import genfromtxt, array, zeros
 import os
 # from tqdm import tqdm
 import shutil
@@ -23,7 +23,7 @@ def edge_save(path, data):
             f.write(str(i[0]) + ', ' + str(i[1]) + '\n')
 
 
-def generate_data():
+def data_generate():
     data_name = 'BIPARTITE'
     graph_types = os.listdir('./datas')
     if(os.path.exists('./data/' + data_name)):
@@ -43,7 +43,7 @@ def generate_data():
         files = os.listdir('./datas/{}'.format(graph))
         # for file in tqdm(files):
         for file in files:
-            data = np.genfromtxt(
+            data = genfromtxt(
                 './datas/{}/{}'.format(graph, file), dtype=int, delimiter='\t', comments='%')
             edge_num = len(data)
             total_edge_num += edge_num
@@ -58,7 +58,7 @@ def generate_data():
             t_nodes_start_idx = max(s_nodes) + 1
             t_nodes = [t_nodes_list.index(
                 i) + t_nodes_start_idx for i in t_nodes_array]
-            data = np.array([list(i) for i in zip(s_nodes, t_nodes)])
+            data = array([list(i) for i in zip(s_nodes, t_nodes)])
             nodes_set = set(s_nodes)
             nodes_set.update(t_nodes)
 
@@ -73,7 +73,7 @@ def generate_data():
                 edge_label.append(0)
 
             nodes_len = len(nodes_set)
-            node_matr = np.zeros([nodes_len, nodes_len])
+            node_matr = zeros([nodes_len, nodes_len])
             node_min = min(s_nodes)
 
             graph_label.append(type_idx)
