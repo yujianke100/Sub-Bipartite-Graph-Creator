@@ -64,7 +64,7 @@ class main_window(Ui_Form):
             print('finished')
         data_cal(selected_list, self.gap_num.value(),
                  self.min_box.value(), self.max_box.value())
-        get_data()
+        generate_data()
 
     def on_click_generate(self):
         self.element_switch(False)
