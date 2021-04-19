@@ -23,7 +23,7 @@ def edge_save(path, data):
             f.write(str(i[0]) + ', ' + str(i[1]) + '\n')
 
 
-def get_data():
+def generate_data():
     data_name = 'BIPARTITE'
     graph_types = os.listdir('./datas')
     if(os.path.exists('./data/' + data_name)):
@@ -95,4 +95,4 @@ def get_data():
     print('All datasets saved!')
 
 # if __name__ == '__main__':
-#     get_data()
+#     generate_data()

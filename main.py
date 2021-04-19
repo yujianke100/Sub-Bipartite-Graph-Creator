@@ -6,9 +6,7 @@ from Ui_design import Ui_Form
 from crawler import get_datasets, downloader
 from unpacker import unpacker
 from data_cut import data_cal
-from get_data import get_data
-import time
-import threading
+from generate_data import generate_data
 
 
 class EmittingStream(QObject):
@@ -23,8 +21,14 @@ class EmittingStream(QObject):
 
 
 class main_window(Ui_Form):
-    def __init__(self):
+    def __init__(self, splash):
         super(main_window, self).__init__()
+        self.data_list_len = 0
+        self.data_num = 0
+        self.splash = splash
+
+    def change_init_status(self, info):
+        self.splash.showMessage(info, Qt.AlignHCenter | Qt.AlignBottom, Qt.black)
 
     def outputWritten(self, text):
         cursor = self.textBrowser.textCursor()
@@ -36,8 +40,8 @@ class main_window(Ui_Form):
     def ui_init(self):
         self.generate.clicked.connect(self.on_click_generate)
         self.quit.clicked.connect(self.on_click_quit)
-        self.splitter.setStretchFactor(0,2)
-        self.splitter.setStretchFactor(1,1)
+        self.splitter.setStretchFactor(0, 2)
+        self.splitter.setStretchFactor(1, 1)
         sys.stdout = EmittingStream(textWritten=self.outputWritten)
         sys.stderr = EmittingStream(textWritten=self.outputWritten)
         self.fresh_scroll()
@@ -99,14 +103,14 @@ class main_window(Ui_Form):
         v.setLayout(lv)
         self.check_box = []
         self.selected_idx = set()
-        self.data_list, self.data_len, self.useful_dataset_num = get_datasets()
-        data_num = 0
+        self.data_list = get_datasets(self)
+        self.data_list_len = len(self.data_list)
+        self.data_num = 0
         for i in self.data_list:
-            if(data_num % 2):
+            if(self.data_num % 2):
                 style = 'background-color:rgb(240,240,240); padding:5;'
             else:
                 style = 'background-color:rgb(220,220,220); padding:5;'
-            data_num += 1
             lh = QHBoxLayout()
             lh.setSpacing(0)
             btn = QCheckBox('{:<5}'.format(i[0]))
@@ -119,6 +123,10 @@ class main_window(Ui_Form):
             lh.addWidget(self.generate_label(i[2], style), stretch=10)
             lh.addWidget(self.generate_label(i[3], style), stretch=10)
             lv.addLayout(lh)
+
+            self.data_num += 1
+            self.change_init_status(
+                'Loading datasets...({}/{})'.format(self.data_num, self.data_list_len))
         self.scrollArea.setWidget(v)
 
     def check_box_select(self):
@@ -138,33 +146,16 @@ class MySplashScreen(QSplashScreen):
         pass
 
 
-class splash_thread(threading.Thread):
-    # https://www.jianshu.com/p/ebecd0667aee
-    def __init__(self, threadName, splash):
-        super(splash_thread, self).__init__(name=threadName)
-        self.splash = splash
-
-    def run(self):
-        for i in range(100):
-            try:
-                self.splash.showMessage('正在读取数据集，已经过{}秒'.format(
-                    i), Qt.AlignHCenter | Qt.AlignBottom, Qt.black)
-                time.sleep(1)
-            except:
-                break
-
-
 def main():
     # 启动界面https://blog.csdn.net/ye281842_/article/details/109637580
     app = QApplication(sys.argv)
     splash = MySplashScreen()
     splash.setPixmap(QPixmap('./splash.png'))  # 设置背景图片
-    splash.setFont(QFont('微软雅黑', 10))
+    splash.setFont(QFont('Times New Roman', 10))
     splash.show()
-    splash_thread('waiting', splash).start()
     app.processEvents()
     Dialog = QDialog()
-    ui = main_window()
+    ui = main_window(splash)
     ui.setupUi(Dialog)
     ui.ui_init()
     Dialog.show()
