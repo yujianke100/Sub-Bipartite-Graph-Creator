@@ -1,0 +1,5 @@
+openpyxl==3.0.7
+requests_html==0.10.0
+requests==2.24.0
+numpy==1.19.2
+PyQt5==5.15.4
