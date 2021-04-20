@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'c:\Users\shinshi\OneDrive - pop.zjgsu.edu.cn\Postgraduate\课程\软件理论工程\Sub-Bipartite-Graph-Creator\design.ui'
+# Form implementation generated from reading ui file 'c:\Users\shinshi\OneDrive - pop.zjgsu.edu.cn\Postgraduate\课程\软件理论工程\Sub-Bipartite-Graph-Creator\gui\design.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.2
 #
@@ -16,6 +16,9 @@ class Ui_Form(object):
         Form.setObjectName("Form")
         Form.setWindowModality(QtCore.Qt.ApplicationModal)
         Form.resize(939, 928)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("c:\\Users\\shinshi\\OneDrive - pop.zjgsu.edu.cn\\Postgraduate\\课程\\软件理论工程\\Sub-Bipartite-Graph-Creator\\gui\\icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        Form.setWindowIcon(icon)
         Form.setAutoFillBackground(True)
         self.gridLayout = QtWidgets.QGridLayout(Form)
         self.gridLayout.setObjectName("gridLayout")
@@ -158,7 +161,7 @@ class Ui_Form(object):
         self.scrollArea = QtWidgets.QScrollArea(self.layoutWidget)
         font = QtGui.QFont()
         font.setFamily("Courier New")
-        font.setPointSize(14)
+        font.setPointSize(28)
         self.scrollArea.setFont(font)
         self.scrollArea.setFrameShape(QtWidgets.QFrame.Box)
         self.scrollArea.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -166,7 +169,7 @@ class Ui_Form(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 913, 314))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 917, 330))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout.addWidget(self.scrollArea)
@@ -175,14 +178,14 @@ class Ui_Form(object):
         self.quit = QtWidgets.QPushButton(self.layoutWidget)
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
-        font.setPointSize(11)
+        font.setPointSize(13)
         self.quit.setFont(font)
         self.quit.setObjectName("quit")
         self.horizontalLayout_3.addWidget(self.quit)
         self.generate = QtWidgets.QPushButton(self.layoutWidget)
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
-        font.setPointSize(11)
+        font.setPointSize(13)
         self.generate.setFont(font)
         self.generate.setObjectName("generate")
         self.horizontalLayout_3.addWidget(self.generate)
@@ -205,7 +208,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "GUI"))
+        Form.setWindowTitle(_translate("Form", "SBGC"))
         self.label.setText(_translate("Form", "Sub-bipartite graph creator"))
         self.label_2.setText(_translate("Form", "Gap:"))
         self.label_3.setText(_translate("Form", "Min#:"))

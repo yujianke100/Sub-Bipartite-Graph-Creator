@@ -1,33 +1,13 @@
 # -*- coding: utf-8 -*-
-# import numpy as np
 from numpy import genfromtxt, array, zeros
-import os
-# from tqdm import tqdm
-import shutil
+from utils.os_control import *
 
-
-def ensure_dir(path):
-    if(not os.path.exists(path)):
-        os.makedirs(path)
-
-
-def label_save(path, data):
-    with open(path, 'w') as f:
-        for i in data:
-            f.write(str(i) + '\n')
-
-
-def edge_save(path, data):
-    with open(path, 'w') as f:
-        for i in data:
-            f.write(str(i[0]) + ', ' + str(i[1]) + '\n')
-
-
-def data_generate():
+def data_generate(timestamp):
+    s_path = './output/output/{}/datas/'.format(timestamp)
+    t_path = './output/output/{}/data/'.format(timestamp)
     data_name = 'BIPARTITE'
-    graph_types = os.listdir('./datas')
-    if(os.path.exists('./data/' + data_name)):
-        shutil.rmtree('./data/' + data_name)
+    graph_types = listdir(s_path)
+    rmdir(t_path + data_name)
     edge_label = []
     node_label = []
     graph_label = []
@@ -40,11 +20,10 @@ def data_generate():
     for graph in graph_types:
         print('generate datasets of {}...'.format(graph), end='')
         type_idx = graph_types.index(graph)
-        files = os.listdir('./datas/{}'.format(graph))
-        # for file in tqdm(files):
+        files = listdir(s_path + graph)
         for file in files:
             data = genfromtxt(
-                './datas/{}/{}'.format(graph, file), dtype=int, delimiter='\t', comments='%')
+                s_path + '{}/{}'.format(graph, file), dtype=int, delimiter='\t', comments='%')
             edge_num = len(data)
             total_edge_num += edge_num
             s_nodes_array = data[:, 0]
@@ -66,11 +45,11 @@ def data_generate():
 
             for node in set(nodes_set):
                 graph_indicator.append(graph_idx)
-                node_label.append(0)
+                # node_label.append(0)
 
             for i in range(edge_num):
                 edges.append([s_nodes[i], t_nodes[i]])
-                edge_label.append(0)
+                # edge_label.append(0)
 
             nodes_len = len(nodes_set)
             node_matr = zeros([nodes_len, nodes_len])
@@ -79,9 +58,9 @@ def data_generate():
             graph_label.append(type_idx)
             graph_idx += 1
         print('finished')
-    ensure_dir('./data/')
-    ensure_dir('./data/{}/'.format(data_name))
-    data_path = './data/{}/{}/raw/'.format(data_name, data_name)
+    ensure_dir(t_path)
+    ensure_dir(t_path + '{}/'.format(data_name))
+    data_path = t_path + '{}/{}/raw/'.format(data_name, data_name)
     ensure_dir(data_path)
 
     data_path = data_path + data_name

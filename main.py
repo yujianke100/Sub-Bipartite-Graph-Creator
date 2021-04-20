@@ -1,12 +1,18 @@
+# -*- coding: utf-8 -*-
 import sys
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QWidget, QCheckBox, QSplashScreen, QLabel, QDialog, QMessageBox
 from PyQt5.QtGui import QPixmap, QFont, QTextCursor
 from PyQt5.QtCore import QObject, pyqtSignal, QEventLoop, Qt, QTimer
-from Ui_design import Ui_Form
-from crawler import get_datasets, downloader
-from unpacker import unpacker
-from data_cut import data_cal
-from data_generate import data_generate
+from gui.Ui_design import Ui_Form
+from utils.crawler import get_datasets, downloader
+from utils.unpacker import unpacker
+from utils.data_cut import data_cal
+from utils.data_generate import data_generate
+
+from time import strftime, localtime
+
+
+splash_img = './gui/splash.png'
 
 
 class EmittingStream(QObject):
@@ -28,7 +34,8 @@ class main_window(Ui_Form):
         self.splash = splash
 
     def change_init_status(self, info):
-        self.splash.showMessage(info, Qt.AlignHCenter | Qt.AlignBottom, Qt.black)
+        self.splash.showMessage(info, Qt.AlignHCenter |
+                                Qt.AlignBottom, Qt.black)
 
     def outputWritten(self, text):
         cursor = self.textBrowser.textCursor()
@@ -54,6 +61,7 @@ class main_window(Ui_Form):
         self.gap_num.setEnabled(flag)
 
     def run(self, selected_list):
+        timestamp = strftime('%Y-%m-%d_%H-%M-%S', localtime())
         for i in selected_list:
             print('downloading {}...'.format(i), end='')
             downloader(i)
@@ -63,8 +71,8 @@ class main_window(Ui_Form):
             unpacker(i)
             print('finished')
         data_cal(selected_list, self.gap_num.value(),
-                 self.min_box.value(), self.max_box.value())
-        data_generate()
+                 self.min_box.value(), self.max_box.value(), timestamp)
+        data_generate(timestamp)
 
     def on_click_generate(self):
         self.element_switch(False)
@@ -107,7 +115,7 @@ class main_window(Ui_Form):
         self.data_list_len = len(self.data_list)
         self.data_num = 0
         for i in self.data_list:
-            style = """padding:10px; font-size:24px; font-family:"Times New Roman";"""
+            style = """padding:10px; font-size:28px; font-family:"Times New Roman";"""
             if(self.data_num % 2):
                 style += 'background-color:rgb(240,240,240);'
             else:
@@ -151,7 +159,7 @@ def main():
     # 启动界面https://blog.csdn.net/ye281842_/article/details/109637580
     app = QApplication(sys.argv)
     splash = MySplashScreen()
-    splash.setPixmap(QPixmap('./splash.png'))  # 设置背景图片
+    splash.setPixmap(QPixmap(splash_img))  # 设置背景图片
     splash.setFont(QFont('Times New Roman', 12))
     splash.show()
     app.processEvents()

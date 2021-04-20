@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
 from requests_html import HTMLSession
 from time import time
 from requests import get
-from os import makedirs
-from os.path import exists
+from utils.os_control import *
 
+s_path = './output/datas_tar/'
+t_path = './output/datas_origin/'
 
 def get_datasets(ui):
     url = 'http://konect.cc/networks/'
@@ -56,15 +58,17 @@ def get_datasets(ui):
 
 
 def downloader(data):
-    if(not exists('./datas_tar')):
-        makedirs('./datas_tar')
+    if(not exists(s_path)):
+        makedirs(s_path)
+    if(not exists(t_path)):
+        makedirs(t_path)
     data_name = 'download.tsv.{}.tar.bz2'.format(data)
 
-    if(exists('./datas_tar/download.tsv.{}.tar.bz2'.format(data))):
+    if(exists(s_path + 'download.tsv.{}.tar.bz2'.format(data))):
         return
 
     url = 'http://konect.cc/files/{}'.format(data_name)
-    with get(url, stream=True) as r, open('./datas_tar/' + data_name, 'wb') as file:
+    with get(url, stream=True) as r, open(s_path + data_name, 'wb') as file:
         total_size = int(r.headers['content-length'])
         content_size = 0
         plan = 0

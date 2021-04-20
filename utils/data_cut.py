@@ -1,64 +1,25 @@
 # -*- coding: utf-8 -*-
-# import numpy as np
 from numpy import genfromtxt, array
-from os import remove, makedirs, listdir
-from os.path import exists
-# from tqdm import tqdm
-from shutil import rmtree
+from utils.os_control import *
 import openpyxl
 
-root_dir = './datas_origin/'
-target_dir = './datas/'
 
-
-def rmdir(path):
-    try:
-        rmtree(path)
-    except:
-        # print('no' + path)
-        pass
-
-
-def rmfile(path):
-    try:
-        remove(path)
-    except:
-        # print('no' + path)
-        pass
-
-
-def ensure_dir(path):
-    if(not exists(path)):
-        makedirs(path)
-
-
-def find_file(dir):
-    files = listdir(dir)
-    for file in files:
-        if(file[:3] == 'out'):
-            file = dir + file
-            # print(file)
-            return file
-    print('not found datas!')
-    return 'None'
-
-
-def read_data(graph):
+def read_data(graph, root_dir):
     try:
         data = genfromtxt(find_file(root_dir + graph),
-                             dtype=int, delimiter='\t', comments='%')
+                          dtype=int, delimiter='\t', comments='%')
         data = data[data[:, 3].argsort()]
     except:
         data = genfromtxt(find_file(root_dir + graph),
-                             dtype=int, delimiter=' ', comments='%')
+                          dtype=int, delimiter=' ', comments='%')
         data = data[data[:, 3].argsort()]
     return data
 
 
-def cut_graph(graph, STEP_NUM, min_len, max_len):
+def cut_graph(graph, STEP_NUM, min_len, max_len, root_dir, target_dir):
     print('-'*58)
     print('reading data {}...'.format(graph[:-1]), end='')
-    data = read_data(graph)
+    data = read_data(graph, root_dir)
     print('finished')
     s_nodes = data[:, 0]
     t_nodes = data[:, 1]
@@ -71,7 +32,6 @@ def cut_graph(graph, STEP_NUM, min_len, max_len):
     tmp_time_max = time_step + time_min
     data_len = len(timestamps)
     print('classification datas...', end='')
-    # for tmp_idx in tqdm(range(data_len)):
     for tmp_idx in range(data_len):
         tmp_list = [s_nodes[tmp_idx], t_nodes[tmp_idx]]
         if(timestamps[tmp_idx] <= tmp_time_max):
@@ -131,7 +91,6 @@ def cut_graph(graph, STEP_NUM, min_len, max_len):
     print('finished')
     print('saving datas...', end='')
     data_list_group_len = len(data_list_groups_final)
-    # for idx_group in tqdm(range(data_list_group_len)):
     for idx_group in range(data_list_group_len):
         with open(target_graph_dir + '{}.txt'.format(idx_group), 'w') as f:
             for nodes in data_list_groups_final[idx_group]:
@@ -140,33 +99,40 @@ def cut_graph(graph, STEP_NUM, min_len, max_len):
     return data_list_group_len
 
 
-def data_cut(graph_box, gap, min_num, max_num):
+def data_cut(graph_box, gap, min_num, max_num, root_dir, target_dir):
     rmdir(target_dir)
     ensure_dir(target_dir)
     graph_num_box = []
     for graph in graph_box:
-        graph_num_box.append(cut_graph(graph + '/', gap, min_num, max_num))
+        graph_num_box.append(
+            cut_graph(graph + '/', gap, min_num, max_num, root_dir, target_dir))
     return graph_num_box
 
 
-def cal_graph(graph_name):
+def cal_graph(graph_name, root_dir):
     graph = graph_name + '/'
     data = array([])
     try:
         data = genfromtxt(find_file(root_dir + graph),
-                             dtype=int, delimiter='\t', comments='%')
+                          dtype=int, delimiter='\t', comments='%')
         s_nodes = data[:, 0]
         t_nodes = data[:, 1]
     except:
         data = genfromtxt(find_file(root_dir + graph),
-                             dtype=int, delimiter=' ', comments='%')
+                          dtype=int, delimiter=' ', comments='%')
         s_nodes = data[:, 0]
         t_nodes = data[:, 1]
     return len(set(s_nodes)), len(set(t_nodes)), len(data)
 
 
-def data_cal(graph_box, gap, min_num, max_num):
-    graph_num_box = data_cut(graph_box, gap, min_num, max_num)
+def data_cal(graph_box, gap, min_num, max_num, timestamp):
+    root_dir = './output/datas_origin/'
+    ensure_dir('./output/output/')
+    ensure_dir('./output/output/{}/'.format(timestamp))
+    target_dir = './output/output/{}/datas/'.format(timestamp)
+    excel_path = './output/output/{}/dataset_info.xlsx'.format(timestamp)
+    graph_num_box = data_cut(graph_box, gap, min_num,
+                             max_num, root_dir, target_dir)
     wb = openpyxl.Workbook()
     ws = wb.active
     idx = 1
@@ -177,13 +143,13 @@ def data_cal(graph_box, gap, min_num, max_num):
     ws['E{}'.format(idx)] = '#Graph'
     idx += 1
     print('='*58)
-    print('{:^58}'.format('Generated dataset statistics'))
-    print('='*58)
+    print('||{:^54}||'.format('Generated dataset statistics'))
+    print('||' + '='*54 + '||')
     print('||{:<30}|{:<5}|{:<5}|{:<6}|{:<4}||'.format(
         'Dataset', '#.S', '#,T', '#.E', '#.G'))
     for graph, num in zip(graph_box, graph_num_box):
-        s_node_len, t_node_len, data_len = cal_graph(graph)
-        print('-'*58)
+        s_node_len, t_node_len, data_len = cal_graph(graph, root_dir)
+        print('||' + '-'*54 + '||')
         print('||{:<30}|{:<5}|{:<5}|{:<6}|{:<4}||'.format(
             graph, s_node_len, t_node_len, data_len, num))
         ws['A{}'.format(idx)] = graph
@@ -196,11 +162,7 @@ def data_cal(graph_box, gap, min_num, max_num):
     while(1):
         try:
             # python can't save excel file while user has been opened it.
-            wb.save('./dataset_info.xlsx')
+            wb.save(excel_path)
             break
         except:
             input('please close the excel and try again!')
-
-# if __name__ == '__main__':
-#     graph_box = ['edit-nawiki', 'edit-dvwiktionary', 'edit-ltwikisource', 'edit-mswikibooks', 'edit-sswiktionary', 'edit-bgwikisource', 'edit-tawikiquote']
-#     data_cal(graph_box, 0.008, 2, 200)

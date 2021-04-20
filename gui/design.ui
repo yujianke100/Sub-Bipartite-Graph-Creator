@@ -14,7 +14,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>GUI</string>
+   <string>SBGC</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>icon.png</normaloff>icon.png</iconset>
   </property>
   <property name="autoFillBackground">
    <bool>true</bool>
@@ -269,7 +273,7 @@
          <property name="font">
           <font>
            <family>Courier New</family>
-           <pointsize>14</pointsize>
+           <pointsize>28</pointsize>
           </font>
          </property>
          <property name="frameShape">
@@ -289,8 +293,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>913</width>
-            <height>314</height>
+            <width>917</width>
+            <height>330</height>
            </rect>
           </property>
          </widget>
@@ -303,7 +307,7 @@
            <property name="font">
             <font>
              <family>Times New Roman</family>
-             <pointsize>11</pointsize>
+             <pointsize>13</pointsize>
             </font>
            </property>
            <property name="text">
@@ -316,7 +320,7 @@
            <property name="font">
             <font>
              <family>Times New Roman</family>
-             <pointsize>11</pointsize>
+             <pointsize>13</pointsize>
             </font>
            </property>
            <property name="text">
