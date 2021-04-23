@@ -167,6 +167,7 @@ def main():
     ui = main_window(splash)
     ui.setupUi(Dialog)
     ui.ui_init()
+    Dialog.resize(1400,1024)
     Dialog.show()
     splash.finish(Dialog)
     splash.deleteLater()

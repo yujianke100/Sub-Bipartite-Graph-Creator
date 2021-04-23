@@ -72,6 +72,7 @@ def data_generate(timestamp):
 
     edge_save(data_path + '_A.txt', edges)
     print('All datasets saved!')
+    print('*'*58)
 
 # if __name__ == '__main__':
 #     generate_data()

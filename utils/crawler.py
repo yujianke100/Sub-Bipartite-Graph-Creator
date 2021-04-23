@@ -77,7 +77,7 @@ def downloader(data):
         for content in r.iter_content(chunk_size=1024):
             file.write(content)
             content_size += len(content)
-            plan = (content_size / total_size) * 100
+            plan = '{:.4}'.format((content_size / total_size) * 100)
             if time() - start_time > 1:
                 start_time = time()
                 speed = content_size - temp_size

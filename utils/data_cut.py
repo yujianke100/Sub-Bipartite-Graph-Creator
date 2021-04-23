@@ -142,7 +142,7 @@ def data_cal(graph_box, gap, min_num, max_num, timestamp):
     ws['D{}'.format(idx)] = 'Edge'
     ws['E{}'.format(idx)] = '#Graph'
     idx += 1
-    print('='*58)
+    print('\n', '='*58)
     print('||{:^54}||'.format('Generated dataset statistics'))
     print('||' + '='*54 + '||')
     print('||{:<30}|{:<5}|{:<5}|{:<6}|{:<4}||'.format(
@@ -158,7 +158,7 @@ def data_cal(graph_box, gap, min_num, max_num, timestamp):
         ws['D{}'.format(idx)] = data_len
         ws['E{}'.format(idx)] = num
         idx += 1
-    print('='*58)
+    print('='*58, '\n')
     while(1):
         try:
             # python can't save excel file while user has been opened it.
