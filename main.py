@@ -45,8 +45,9 @@ class main_window(Ui_Form):
         self.textBrowser.ensureCursorVisible()
 
     def ui_init(self):
-        self.generate.clicked.connect(self.on_click_generate)
-        self.quit.clicked.connect(self.on_click_quit)
+        self.Generate.clicked.connect(self.on_click_generate)
+        self.Quit.clicked.connect(self.on_click_quit)
+        self.Deselect.clicked.connect(self.on_click_deselect)
         self.splitter.setStretchFactor(0, 2)
         self.splitter.setStretchFactor(1, 1)
         sys.stdout = EmittingStream(textWritten=self.outputWritten)
@@ -54,8 +55,8 @@ class main_window(Ui_Form):
         self.fresh_scroll()
 
     def element_switch(self, flag):
-        self.generate.setEnabled(flag)
-        self.quit.setEnabled(flag)
+        self.Generate.setEnabled(flag)
+        self.Quit.setEnabled(flag)
         self.max_box.setEnabled(flag)
         self.min_box.setEnabled(flag)
         self.gap_num.setEnabled(flag)
@@ -75,8 +76,10 @@ class main_window(Ui_Form):
                  self.min_box.value(), self.max_box.value(), timestamp)
         data_generate(timestamp)
     
-    # 用户点击'generate'选项，即用户进行开始生成的操作。
+    # 用户点击'Generate'选项，即用户进行开始生成的操作。
     def on_click_generate(self):
+        if(len(self.selected_idx) <= 1):
+            return
         self.element_switch(False)
         selected_list = []
         check_info = ''
@@ -95,10 +98,18 @@ class main_window(Ui_Form):
         self.scrollArea.setEnabled(True)
         self.element_switch(True)
 
-    # 用户点击'quit'选项，即用户进行停止生成的操作。
+    # 用户点击'Quit'选项，即用户进行停止生成的操作。
     def on_click_quit(self):
         self.element_switch(False)
         sys.exit()
+    
+    # 用户点击'Deselect all'选项，取消所有数据集的勾选。
+    def on_click_deselect(self):
+        for i in range(len(self.check_box)):
+            if(self.check_box[i].isChecked()):
+                self.check_box[i].setChecked(False)
+            self.selected_idx = set()
+        self.Generate.setText('generate')
 
     def generate_label(self, name, style):
         tmp_label = QLabel()
@@ -150,7 +161,7 @@ class main_window(Ui_Form):
                     self.selected_idx.remove(i)
                 except:
                     pass
-        self.generate.setText('generate({})'.format(len(self.selected_idx)))
+        self.Generate.setText('generate({})'.format(len(self.selected_idx)))
 
 
 class MySplashScreen(QSplashScreen):
