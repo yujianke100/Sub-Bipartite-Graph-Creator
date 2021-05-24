@@ -7,6 +7,7 @@ from utils.os_control import *
 s_path = './output/datas_tar/'
 t_path = './output/datas_origin/'
 
+# 爬虫获取数据集
 def get_datasets(ui):
     url = 'http://konect.cc/networks/'
     headers = {
@@ -34,6 +35,7 @@ def get_datasets(ui):
     second_data_types_img = r.html.xpath(
         "//div[@id='page']//table/tbody[1]/tr/td[3]/img[4]")
 
+    #选取符合我们需求的数据集
     data_len = len(avaliable_img)
     data_list = []
     for i in range(data_len):
@@ -57,6 +59,7 @@ def get_datasets(ui):
 # https://blog.csdn.net/dqy74568392/article/details/96479370
 
 
+# 下载文件并显示网速和下载进度
 def downloader(data):
     if(not exists(s_path)):
         makedirs(s_path)
@@ -68,25 +71,34 @@ def downloader(data):
         return
 
     url = 'http://konect.cc/files/{}'.format(data_name)
+    # 请求下载地址，以流式的。打开要下载的文件位置。
     with get(url, stream=True) as r, open(s_path + data_name, 'wb') as file:
         total_size = int(r.headers['content-length'])
         content_size = 0
         plan = 0
         start_time = time()
         temp_size = 0
+        # 开始下载每次请求1024字节
         for content in r.iter_content(chunk_size=1024):
             file.write(content)
+            # 统计已下载大小
             content_size += len(content)
+            # 计算下载进度
             plan = '{:.4}'.format((content_size / total_size) * 100)
+            # 每一秒统计一次下载量
             if time() - start_time > 1:
                 start_time = time()
                 speed = content_size - temp_size
+                # KB级下载速度处理
                 if 0 <= speed < (1024 ** 2):
                     print(plan, '%', speed / 1024, 'KB/s')
+                # MB级下载速度处理
                 elif (1024 ** 2) <= speed < (1024 ** 3):
                     print(plan, '%', speed / (1024 ** 2), 'MB/s')
+                # GB级下载速度处理
                 elif (1024 ** 3) <= speed < (1024 ** 4):
                     print(plan, '%', speed / (1024 ** 3), 'GB/s')
+                # TB级下载速度处理
                 else:
                     print(plan, '%', speed / (1024 ** 4), 'TB/s')
 

@@ -2,6 +2,7 @@
 from numpy import genfromtxt, array, zeros
 from utils.os_control import *
 
+# 数据生成过程
 def data_generate(timestamp):
     s_path = './output/output/{}/datas/'.format(timestamp)
     t_path = './output/output/{}/data/'.format(timestamp)
