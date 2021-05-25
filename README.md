@@ -159,5 +159,5 @@ Chromium is required to run, please make sure you can access the download [URL](
 - [x] 实现对生成的数据集的信息统计
 - [x] 将数据集的统计信息保存至表格文件中 
 - [x] 将打印的提示信息转到GUI中显示
-- [ ] 打包成单个可执行文件
+- [ ] ~~打包成单个可执行文件(可能是浏览器导致无法打包)~~
 - [x] 添加全不选功能按钮
