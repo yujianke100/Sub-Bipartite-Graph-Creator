@@ -20,7 +20,7 @@ python ./main.py
 **举例：** 二部图在各个领域无处不在。例如，对于维基词典的用户和页面之间的关系，可以用边表示用户在页面上的编辑行为，构成一个二部图。在图中，可以有多个用户合作编辑同一个页面，也可以由一个用户编辑多个页面，但没有用户-用户或页面-页面的联系。下图展示了一个用户-页面关系的二部图的例子。Bob(s1)和Lisa(s3)合作编辑B(t1)页，而Jack(s2)、Lisa(s3)和Sam(s4)合作编辑A(t1)和C(t3)页。
 
 <div align=center>
-   <img src="./fig/intro.png" width="80%" alt="bipartite example"/><br/>
+   <img src="./fig/intro.png" width="50%" alt="bipartite example"/><br/>
 </div>
 
 ### 二部图分类应用举例
