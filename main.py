@@ -109,7 +109,7 @@ class main_window(Ui_Form):
             if(self.check_box[i].isChecked()):
                 self.check_box[i].setChecked(False)
             self.selected_idx = set()
-        self.Generate.setText('generate')
+        self.Generate.setText('Generate')
 
     def generate_label(self, name, style):
         tmp_label = QLabel()
