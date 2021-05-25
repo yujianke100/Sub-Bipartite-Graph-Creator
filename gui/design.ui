@@ -115,7 +115,7 @@
             <enum>QFrame::Plain</enum>
            </property>
            <property name="text">
-            <string>#Min:</string>
+            <string>Min:</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -147,7 +147,7 @@
             </font>
            </property>
            <property name="text">
-            <string>#Max:</string>
+            <string>Max:</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -234,7 +234,7 @@
             </font>
            </property>
            <property name="text">
-            <string>#Node</string>
+            <string>Nodes</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -250,7 +250,7 @@
             </font>
            </property>
            <property name="text">
-            <string>#Edge</string>
+            <string>Edges</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>

@@ -137,17 +137,17 @@ def data_cal(graph_box, gap, min_num, max_num, timestamp):
     ws = wb.active
     idx = 1
     ws['A{}'.format(idx)] = 'Data'
-    ws['B{}'.format(idx)] = 'S Vertex'
-    ws['C{}'.format(idx)] = 'T Vertex'
-    ws['D{}'.format(idx)] = 'Edge'
-    ws['E{}'.format(idx)] = '#Graph'
+    ws['B{}'.format(idx)] = 'S Vertices'
+    ws['C{}'.format(idx)] = 'T Vertices'
+    ws['D{}'.format(idx)] = 'Edges'
+    ws['E{}'.format(idx)] = 'Graphs'
     idx += 1
     print()
     print('='*58)
     print('||{:^54}||'.format('Generated dataset statistics'))
     print('||' + '='*54 + '||')
     print('||{:<30}|{:<5}|{:<5}|{:<6}|{:<4}||'.format(
-        'Dataset', '#.S', '#,T', '#.E', '#.G'))
+        'Dataset', 'S', 'T', 'E', 'G'))
     for graph, num in zip(graph_box, graph_num_box):
         s_node_len, t_node_len, data_len = cal_graph(graph, root_dir)
         print('||' + '-'*54 + '||')
