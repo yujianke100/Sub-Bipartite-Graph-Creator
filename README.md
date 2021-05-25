@@ -129,6 +129,7 @@ Chromium is required to run, please make sure you can access the download [URL](
 <div align=center>
    <img src="./fig/datas_origin.jpeg" width="80%" alt="main"/><br/>
 </div>
+<br/>
 
 6. **数据集裁剪：** 
    根据设定进行裁剪，获得各数据集的无时序连通子图，并将结果存于以当前时间命名的文件夹中。
