@@ -58,9 +58,9 @@ python ./main.py
 
 ## 功能描述
 （1）选择需要处理的数据，根据当前时间，对每个大图（源数据）创建文件夹，下载源文件
-
-   <img src="./fig/66711621862118_.pic.jpg" width="200" height="180" alt="main"/><br/>
-   
+<div align=center>
+   <img src="./fig/66711621862118_.pic.jpg" width="60%" alt="main"/><br/>
+</div>
 （2）Download：下载中（下载器）
 
 （3）下载时保留源文件（压缩包格式）
