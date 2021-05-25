@@ -1,8 +1,8 @@
 ﻿# Sub-Bipartite-Graph-Creator
-
+[toc]
 ## Guide
 
-### This program need [Python3](https://www.python.org/downloads/). We recommend using [Anaconda](https://www.anaconda.com/products/individual#Downloads) or [Miniconda](https://docs.conda.io/en/latest/miniconda.html).
+**This program need [Python3](https://www.python.org/downloads/). We recommend using [Anaconda](https://www.anaconda.com/products/individual#Downloads) or [Miniconda](https://docs.conda.io/en/latest/miniconda.html).**
 
 ### 1. Install environment.
 
@@ -11,7 +11,10 @@ pip install -r ./requirements.txt --user -i http://mirrors.aliyun.com/pypi/simpl
 ### 2. Run the program.
 python ./main.py
 
+---
+
 ## 项目介绍(Chinses)
+
 在当今的数据时代，图作为大数据的一个重要表示结构，得到了很大关注。比如，已经影响到我们日常生活各个方面的电子商务平台和社交网络，我们可以把它们建模为图。因此，随着图数据的日益增加，许多研究工作都致力于挖掘图数据结构中有价值的信息。通常情况下，有两类图。一类是简单图，其中的连接可以连接任何一对实体。另一类是多部图，其中顶点被分为不同的互不相干的类别，而边只存在于不同类别的顶点之间。
 
 ### 二部图
@@ -32,22 +35,20 @@ python ./main.py
 3. 在描述蛋白质结构时，将二级结构之间的相互作用表示为二部图是可行的。而且，二部图的分类可以作为寻找蛋白质中常见亚结构的基础。因此，在寻找具有类似结构的蛋白质时，二部图分类也可以发挥重要作用。
 
 ### 问题描述
-1. 定义：利用某一时序二部图的时序信息，从二部图中截出大小符合要求的连通图，可获得一组同类型的二部图数据集。利用该思想，可生成获得多类型二部图数据集。
+1. **定义：** 利用某一时序二部图的时序信息，从二部图中截出大小符合要求的连通图，可获得一组同类型的二部图数据集。利用该思想，可生成获得多类型二部图数据集。
 
-2. 输入：
+2. **输入：**
     - 同一张图的节点出现的相对时间间隔（Gap）
     - 生成的图的最小节点数（Min）
     - 生成的图的最大节点数（Max）
 
-3. 输出：
-
+3. **输出：**
     - 多类型二部图数据集的邻接矩阵
     - 每个节点对应的图序号
     - 每个图的类别标签
     - 新数据集各信息的统计表格
 
-4. 痛点：
-
+4. **痛点：**
     - 少有公开的多类型二部图数据集
     - 难以筛选、批量下载时序二部图数据集
     - 对原始数据集的处理过程较为繁杂
@@ -56,7 +57,7 @@ python ./main.py
 
 ### 功能描述
 
-1. 启动爬虫爬取数据集，并对这些数据集进行筛选，只保留时序二部图数据集。整个过程大约需要十五秒。
+1. 启动爬虫爬取数据集，并对这些数据集进行筛选，只保留时序二部图数据集。整个过程大约需要十五秒 ~~（不要催，在做了）~~。
 
 <div align=center>
 <figure>
@@ -102,7 +103,7 @@ python ./main.py
 </div>
 <br/>
 
-### 功能优化：
+### 功能优化
 
 1. 初始化时提供加载界面，并显示加载过程。
 
