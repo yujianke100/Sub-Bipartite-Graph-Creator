@@ -7,8 +7,9 @@
     - [二部图](#二部图)
     - [二部图分类应用举例](#二部图分类应用举例)
     - [问题描述](#问题描述)
-    - [功能描述](#功能描述)
+    - [用户使用手册](#用户使用手册)
     - [功能优化](#功能优化)
+    - [技术债](#技术债)
 ## Guide
 
 **This program need [Python3](https://www.python.org/downloads/). We recommend using [Anaconda](https://www.anaconda.com/products/individual#Downloads) or [Miniconda](https://docs.conda.io/en/latest/miniconda.html).**
@@ -69,7 +70,10 @@ Chromium is required to run, please make sure you can access the download [URL](
 
 ### 用户使用手册
 
-1. **初始化运行：** 启动爬虫爬取数据集，并对这些数据集进行筛选，只保留时序二部图数据集。整个过程大约需要十五秒 ~~（不要催，在做了）~~。
+该部分将介绍本项目的各界面以及使用方法。
+
+1. **初始化运行：** 
+   启动爬虫爬取数据集，并对这些数据集进行筛选，只保留时序二部图数据集。网络畅通的情况下，整个过程大约需要十五秒到二十秒 ~~（不要催，在做了）~~。
 
 <div align=center>
 <figure>
@@ -81,7 +85,8 @@ Chromium is required to run, please make sure you can access the download [URL](
 </div>
 <br/>
 
-2. **主界面显示：** 其中各系数分别代表 Gap: 裁剪数据集的时间间隔；#Min: 选择图的最少点数限制；#Max: 选择图的最多点数限制
+2. **主界面显示：** 
+   主界面最上方为程序名；左上角的**Deselect all**按钮用于放弃所有数据集的选择；上方的三个输入框分别为：**Gap:** 裁剪数据集的时间间隔、**Min:** 选择图的最少点数限制、**Max:** 选择图的最多点数限制；界面中央是用于展示数据集信息、选择数据集的信息框；信息框左下方的**Quit**按钮用于退出程序；**Generate**按钮用于生成数据集；下方空白的窗口用于打印生成数据集的过程提示。
 
 <div align=center>
 <figure>
@@ -90,33 +95,39 @@ Chromium is required to run, please make sure you can access the download [URL](
 </div>
 <br/>
 
-3. **数据集选择：** 利用左上角“Deselect all”按钮可取消所有已选数据集；当前已选数据集的数量会显示在右下角“generate”按钮上；当选择的数据集数量大于等于2时，单击“generate”按钮会弹出选中的数据集的确认界面；按下确定后将会开始生成由这些数据集为原始数据的多类型二部图数据集。
+1. **数据集选择：** 
+   利用左上角**Deselect all**按钮可取消所有已选数据集；当前已选数据集的数量会显示在右下角**Generate**按钮上；当选择的数据集数量大于等于2时，单击**Generate**按钮会弹出选中的数据集的确认界面；按下确定后将会开始生成由这些数据集为原始数据的多类型二部图数据集。
 
 <div align=center>
    <img src="./fig/data_check.jpeg" width="80%" alt="main"/><br/>
 </div>
 <br/>
 
-4. **数据集下载：** 下载器下载并获取数据集源文件。
+4. **数据集下载：** 
+   下载器下载并获取数据集源文件。
+
 <div align=center>
    <img src="./fig/datas_tar.jpeg" width="80%" alt="main"/><br/>
 </div>
 <br/>
 
-5. **数据集解压：** 解压器解压所需的数据集。
+5. **数据集解压：** 
+   解压器解压所需的数据集。
 
 <div align=center>
    <img src="./fig/datas_origin.jpeg" width="80%" alt="main"/><br/>
 </div>
 
-6. **数据集裁剪：** 根据设定进行裁剪，获得各数据集的无时序连通子图，并将结果存于以当前时间命名的文件夹中。
+6. **数据集裁剪：** 
+   根据设定进行裁剪，获得各数据集的无时序连通子图，并将结果存于以当前时间命名的文件夹中。
 
 <div align=center>
    <img src="./fig/raw.jpeg" width="80%" alt="main"/><br/>
 </div>
 <br/>
 
-7. **数据集统计：** 数据统计，包括每种类型的二部图中的所有S节点数量，所有T节点数量，总边数以及该类型的图的总数。
+7. **数据集统计：** 
+   数据统计，包括每种类型的二部图中的所有**S**节点数量，所有**T**节点数量，总边数以及该类型的图的总数。
 
 <div align=center>
    <img src="./fig/data_exccel.jpeg" width="80%" alt="main"/><br/>
@@ -126,7 +137,6 @@ Chromium is required to run, please make sure you can access the download [URL](
 ### 功能优化
 
 1. 初始化时提供加载界面，并显示加载过程。
-
 2. UI界面提供信息展示窗口，实时展示当前步骤，并在得到数据集时打印“伪统计表”。
 
 <div align=center>
@@ -135,13 +145,18 @@ Chromium is required to run, please make sure you can access the download [URL](
 <br/>
 
 3. 利用QT5组件，界面可自适应拖拽，超参输入框可手动输入规定范围内的数值，也可鼠标滚轮调节。
-
 4. 下载器于下载前会检查本地是否已有目标数据集，避免重复下载。
-
 5. 数据表格保持对齐。
-
 6. 表格中上下相邻的选项组用统一的底色区分。
-
 7. 生成一次数据集后，可直接回到主界面继续选择生成其他数据集，并提供“一键全不选”功能按钮。
 
-
+### 技术债
+- [x] 利用爬虫读取[konect.cc](http://konect.cc/networks/)中的数据集
+- [x] 利用H5中的元素实现数据集的筛选
+- [x] 实现对数据集的下载与解压
+- [x] 实现对数据集的裁剪和生成
+- [x] 实现对生成的数据集的信息统计
+- [x] 将数据集的统计信息保存至表格文件中 
+- [x] 将打印的提示信息转到GUI中显示
+- [ ] 打包成单个可执行文件
+- [x] 添加全不选功能按钮
