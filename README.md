@@ -67,9 +67,9 @@ Chromium is required to run, please make sure you can access the download [URL](
     - 根据时序信息进行分割，可能获得实验中无法使用的非连通图
     - 难以直接获取新生成的数据集的各类信息，如总点数、边数等
 
-### 功能描述
+### 用户使用手册
 
-1. 启动爬虫爬取数据集，并对这些数据集进行筛选，只保留时序二部图数据集。整个过程大约需要十五秒 ~~（不要催，在做了）~~。
+1. **初始化运行：** 启动爬虫爬取数据集，并对这些数据集进行筛选，只保留时序二部图数据集。整个过程大约需要十五秒 ~~（不要催，在做了）~~。
 
 <div align=center>
 <figure>
@@ -77,38 +77,46 @@ Chromium is required to run, please make sure you can access the download [URL](
    <img src="./fig/prepare2.png" width="45%" alt="main"/>
    <img src="./fig/prepare3.png" width="45%" alt="main"/>
    <img src="./fig/prepare4.png" width="45%" alt="main"/>
+</figure>
+</div>
+<br/>
+
+2. **主界面显示：** 其中各系数分别代表 Gap: 裁剪数据集的时间间隔；#Min: 选择图的最少点数限制；#Max: 选择图的最多点数限制
+
+<div align=center>
+<figure>
    <img src="./fig/main_ui.jpg" width="80%" alt="main"/>
 </figure>
 </div>
 <br/>
 
-2. 选择需要处理的数据。利用左上角“Deselect all”按钮可取消所有已选数据集。当前已选数据集的数量会显示在右下角“generate”按钮上。当选择的数据集数量大于等于2时，单击“generate”按钮会弹出选中的数据集的确认界面。按下确定后将会开始生成由这些数据集为原始数据的多类型二部图数据集。
+3. **数据集选择：** 利用左上角“Deselect all”按钮可取消所有已选数据集；当前已选数据集的数量会显示在右下角“generate”按钮上；当选择的数据集数量大于等于2时，单击“generate”按钮会弹出选中的数据集的确认界面；按下确定后将会开始生成由这些数据集为原始数据的多类型二部图数据集。
 
 <div align=center>
    <img src="./fig/data_check.jpeg" width="80%" alt="main"/><br/>
 </div>
 <br/>
 
-3. 下载器下载并获取数据集源文件。
+4. **数据集下载：** 下载器下载并获取数据集源文件。
 <div align=center>
    <img src="./fig/datas_tar.jpeg" width="80%" alt="main"/><br/>
 </div>
 <br/>
 
-4. 解压器解压所需的数据集。
+5. **数据集解压：** 解压器解压所需的数据集。
 
 <div align=center>
    <img src="./fig/datas_origin.jpeg" width="80%" alt="main"/><br/>
 </div>
 
-5. 根据设定进行裁剪，获得各数据集的无时序连通子图，并将结果存于以当前时间命名的文件夹中。
+6. **数据集裁剪：** 根据设定进行裁剪，获得各数据集的无时序连通子图，并将结果存于以当前时间命名的文件夹中。
 
 <div align=center>
    <img src="./fig/raw.jpeg" width="80%" alt="main"/><br/>
 </div>
 <br/>
 
-6. 数据统计，包括每种类型的二部图中的所有S节点数量，所有T节点数量，总边数以及该类型的图的总数。
+7. **数据集统计：** 数据统计，包括每种类型的二部图中的所有S节点数量，所有T节点数量，总边数以及该类型的图的总数。
 
 <div align=center>
    <img src="./fig/data_exccel.jpeg" width="80%" alt="main"/><br/>
