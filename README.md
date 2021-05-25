@@ -65,6 +65,7 @@ Chromium is required to run, please make sure you can access the download [URL](
     - 同一张图的节点出现的相对时间间隔（Gap）
     - 生成的图的最小节点数（Min）
     - 生成的图的最大节点数（Max）
+    - 多于两张的时序二部图
 
 3. **输出：**
     - 多类型二部图数据集的邻接矩阵
