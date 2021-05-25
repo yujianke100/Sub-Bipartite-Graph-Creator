@@ -161,7 +161,7 @@ class main_window(Ui_Form):
                     self.selected_idx.remove(i)
                 except:
                     pass
-        self.Generate.setText('generate({})'.format(len(self.selected_idx)))
+        self.Generate.setText('Generate({})'.format(len(self.selected_idx)))
 
 
 class MySplashScreen(QSplashScreen):
