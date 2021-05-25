@@ -10,6 +10,8 @@
     - [用户使用手册](#用户使用手册)
     - [功能优化](#功能优化)
     - [技术债](#技术债)
+    - [规避使用无头浏览器的可行性](#规避使用无头浏览器的可行性)
+    - [关于下载“墙外”的Chromium浏览器问题](#关于下载墙外的chromium浏览器问题)
 ## Guide
 
 **This program need [Python3](https://www.python.org/downloads/). We recommend using [Anaconda](https://www.anaconda.com/products/individual#Downloads) or [Miniconda](https://docs.conda.io/en/latest/miniconda.html).**
@@ -161,3 +163,11 @@ Chromium is required to run, please make sure you can access the download [URL](
 - [x] 将打印的提示信息转到GUI中显示
 - [ ] ~~打包成单个可执行文件(可能是浏览器导致无法打包)~~
 - [x] 添加全不选功能按钮
+
+### 规避使用无头浏览器的可行性
+**答：** ~~臣妾做不到~~ 不可行。数据集由脚本动态生成，再用H5展示。直接对H5进行爬取将无法获得数据集信息。
+**立即推：** 如果是因为浏览器而无法打包，那么除非使用用户自己的浏览器+驱动，否则该问题无解。显然地，为了打包成可执行文件，反而让用户更加麻烦，不可取。
+
+### 关于下载“墙外”的Chromium浏览器问题
+一方面，不同的操作系统需要使用面向不同平台的浏览器。另一方面，兼容的浏览器版本也可能会随着库的版本更迭而变化，因此不考虑提供额外的浏览器下载帮助。
+~~再说了，得靠这玩意儿搞学术的不会翻墙是怎么活下来的。~~
