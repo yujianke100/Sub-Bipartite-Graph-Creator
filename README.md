@@ -67,18 +67,20 @@ python ./main.py
    <img src="./fig/main_ui.jpg" width="80%" alt="main"/>
 </figure>
 </div>
+<br/>
 
 2. 选择需要处理的数据。利用左上角“Deselect all”按钮可取消所有已选数据集。当前已选数据集的数量会显示在右下角“generate”按钮上。当选择的数据集数量大于等于2时，单击“generate”按钮会弹出选中的数据集的确认界面。按下确定后将会开始生成由这些数据集为原始数据的多类型二部图数据集。
 
 <div align=center>
    <img src="./fig/data_check.jpeg" width="80%" alt="main"/><br/>
 </div>
+<br/>
 
 3. 下载器下载并获取数据集源文件。
-
 <div align=center>
    <img src="./fig/datas_tar.jpeg" width="80%" alt="main"/><br/>
 </div>
+<br/>
 
 4. 解压器解压所需的数据集。
 
@@ -91,12 +93,14 @@ python ./main.py
 <div align=center>
    <img src="./fig/raw.jpeg" width="80%" alt="main"/><br/>
 </div>
+<br/>
 
 6. 数据统计，包括每种类型的二部图中的所有S节点数量，所有T节点数量，总边数以及该类型的图的总数。
 
 <div align=center>
    <img src="./fig/data_exccel.jpeg" width="80%" alt="main"/><br/>
 </div>
+<br/>
 
 ### 功能优化：
 
@@ -107,6 +111,7 @@ python ./main.py
 <div align=center>
    <img src="./fig/data_ui.jpeg" width="80%" alt="main"/><br/>
 </div>
+<br/>
 
 3. 利用QT5组件，界面可自适应拖拽，超参输入框可手动输入规定范围内的数值，也可鼠标滚轮调节。
 
