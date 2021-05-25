@@ -13,6 +13,7 @@
 ## Guide
 
 **This program need [Python3](https://www.python.org/downloads/). We recommend using [Anaconda](https://www.anaconda.com/products/individual#Downloads) or [Miniconda](https://docs.conda.io/en/latest/miniconda.html).**
+The crawled datasets are from [konect.cc](http://konect.cc/networks/).
 
 ### 1. Install environment.
 
