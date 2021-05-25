@@ -20,7 +20,7 @@ pip install -r ./requirements.txt --user -i http://mirrors.aliyun.com/pypi/simpl
 ### 2. Run the program.
 python ./main.py
 
-Chromium is required to run, please make sure you can access the download [URL](https://storage.googleapis.com/)
+Chromium is required to run, please make sure you can access the download [URL](https://storage.googleapis.com/).
 
 ---
 
