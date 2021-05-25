@@ -1,5 +1,14 @@
 ﻿# Sub-Bipartite-Graph-Creator
-[toc]
+- [Sub-Bipartite-Graph-Creator](#sub-bipartite-graph-creator)
+  - [Guide](#guide)
+    - [1. Install environment.](#1-install-environment)
+    - [2. Run the program.](#2-run-the-program)
+  - [项目介绍(Chinses)](#项目介绍chinses)
+    - [二部图](#二部图)
+    - [二部图分类应用举例](#二部图分类应用举例)
+    - [问题描述](#问题描述)
+    - [功能描述](#功能描述)
+    - [功能优化](#功能优化)
 ## Guide
 
 **This program need [Python3](https://www.python.org/downloads/). We recommend using [Anaconda](https://www.anaconda.com/products/individual#Downloads) or [Miniconda](https://docs.conda.io/en/latest/miniconda.html).**
