@@ -10,10 +10,11 @@
     - [项目描述](#项目描述)
     - [用户使用手册](#用户使用手册)
     - [功能优化](#功能优化)
-    - [技术债](#技术债)
+    - [目标与技术债](#目标与技术债)
       - [无法将项目打包为可执行文件的原因](#无法将项目打包为可执行文件的原因)
       - [规避使用无头浏览器的可行性](#规避使用无头浏览器的可行性)
       - [关于下载“墙外”的Chromium浏览器问题](#关于下载墙外的chromium浏览器问题)
+      - [关于独立的数据集筛选下载器](#关于独立的数据集筛选下载器)
 ## Guide
 
 **This program need [Python3](https://www.python.org/downloads/). We recommend using [Anaconda](https://www.anaconda.com/products/individual#Downloads) or [Miniconda](https://docs.conda.io/en/latest/miniconda.html).**
@@ -163,7 +164,7 @@ Chromium is required to run, please make sure that you can access the download [
 6. 表格中上下相邻的选项组用统一的底色区分。
 7. 生成一次数据集后，可直接回到主界面继续选择生成其他数据集，并提供“一键全不选”功能按钮。
 
-### 技术债
+### 目标与技术债
 - [x] 健壮的GUI的搭建
 - [x] 利用爬虫读取[konect.cc](http://konect.cc/networks/)中的数据集
 - [x] 利用H5中的元素实现数据集的筛选
@@ -174,6 +175,8 @@ Chromium is required to run, please make sure that you can access the download [
 - [x] 将打印的提示信息转到GUI中显示
 - [ ] ~~打包成单个可执行文件~~
 - [x] 添加全不选功能按钮
+- [ ] 分离数据集收集部分和处理部分
+- [ ] 单独开发数据集筛选下载器
 
 #### 无法将项目打包为可执行文件的原因
 我们利用**Pyinstaller**和**fbs**，分别在**Ubuntu**和**Windows**上，都进行了打包的尝试，最终全部失败。但是在测试中我们发现，当将爬虫部分的代码删去，就可以打包成功。考虑到我们所使用的**requests_html**需要使用到**Chromium**浏览器，我们推断认为，无法打包为可执行文件的原因是无法对浏览器进行二次封装。
@@ -186,3 +189,7 @@ Chromium is required to run, please make sure that you can access the download [
 #### 关于下载“墙外”的Chromium浏览器问题
 一方面，不同的操作系统需要使用面向不同平台的浏览器。另一方面，兼容的浏览器版本也可能会随着库的版本更迭而变化，因此不考虑繁琐地提供额外的浏览器下载帮助 ~~，自己百度哇~~。
 ~~再说了，想拿这玩意儿搞学术的不会翻墙是怎么活下来的。~~
+
+#### 关于独立的数据集筛选下载器
+~~咕咕咕~~
+在今后根据需求再做开发安排。
